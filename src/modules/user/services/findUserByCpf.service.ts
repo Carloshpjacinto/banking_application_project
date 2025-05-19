@@ -8,10 +8,10 @@ export class FindUserByCpfService {
     @Inject('USER_REPOSITORY')
     private readonly userRepository: Repository<User>,
   ) {}
-  async execute(cpf: string): Promise<User> {
+  async execute(cpf: string): Promise<User | null> {
     const user = await this.userRepository.findOne({ where: { CPF: cpf } });
 
-    if (!user) throw new Error(`Usuário não encontrado`);
+    console.log(cpf);
 
     return user;
   }

@@ -10,22 +10,28 @@ export class CreateBankAccountService {
     private readonly bankAccountRepository: Repository<Bankaccount>,
   ) {}
   async execute(body: CreateBankaccountDto): Promise<Bankaccount> {
-    const account_number = `81${Math.floor(Math.random() * 79) + 10}-${Math.floor(Math.random() * 9) + 1}`;
+    try {
+      const account_number = `81${Math.floor(Math.random() * 79) + 10}-${Math.floor(Math.random() * 9) + 1}`;
 
-    const NewbankAccount = this.bankAccountRepository.create({
-      access: body.access,
+      const NewbankAccount = this.bankAccountRepository.create({
+        access: body.access,
 
-      agency: '0001',
+        agency: '0001',
 
-      num_account: account_number,
+        num_account: account_number,
 
-      debit: '500',
+        debit: '500',
 
-      userId: 1,
-    });
+        userId: body.userId,
+      });
 
-    await this.bankAccountRepository.save(NewbankAccount);
+      await this.bankAccountRepository.save(NewbankAccount);
 
-    return NewbankAccount;
+      return NewbankAccount;
+    } catch (err) {
+      throw new Error(
+        `Erro ao criar conta bancaria, tente novamente mais, ${err}`,
+      );
+    }
   }
 }
