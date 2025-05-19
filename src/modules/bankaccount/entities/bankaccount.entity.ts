@@ -1,4 +1,12 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from 'src/modules/user/entities/user.entity';
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Bankaccount {
@@ -18,7 +26,7 @@ export class Bankaccount {
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   debit: string;
 
-  @Column()
-  @Index({ unique: true })
+  @OneToOne(() => User, (user) => user.id)
+  @JoinColumn({ name: 'user_id' })
   userId: number;
 }
