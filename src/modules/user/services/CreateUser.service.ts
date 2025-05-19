@@ -10,10 +10,16 @@ export class CreateUserService {
     private readonly userRepository: Repository<User>,
   ) {}
   async execute(data: CreateUserDto): Promise<User> {
-    const newUser = this.userRepository.create(data);
+    try {
+      const newUser = this.userRepository.create(data);
 
-    await this.userRepository.save(newUser);
+      await this.userRepository.save(newUser);
 
-    return newUser;
+      return newUser;
+    } catch (err) {
+      throw new Error(
+        `Erro ao criar conta bancaria, tente novamente mais, ${err}`,
+      );
+    }
   }
 }
