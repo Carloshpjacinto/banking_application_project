@@ -13,7 +13,7 @@ export class RegisterBankAccountAuthService {
     private readonly findBankAccountByAccessService: FindBankAccountByAccessService,
   ) {}
 
-  async execute(body: CreateBankAccountAuthDto) {
+  async execute(userId: number, body: CreateBankAccountAuthDto) {
     try {
       const existingBank = await this.findBankAccountByAccessService.execute(
         body.access,
@@ -23,7 +23,10 @@ export class RegisterBankAccountAuthService {
 
       body.access = await hashData(body.access);
 
-      const bankaccount = await this.createBankAccountService.execute(body);
+      const bankaccount = await this.createBankAccountService.execute(
+        userId,
+        body,
+      );
 
       const { access, ...rest } = bankaccount;
 

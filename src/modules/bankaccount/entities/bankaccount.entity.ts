@@ -7,6 +7,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { TypeBankAccount } from '../dto/create-bankaccount.dto';
 
 @Entity()
 export class Bankaccount {
@@ -26,7 +27,19 @@ export class Bankaccount {
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   debit: string;
 
-  @OneToOne(() => User, (user) => user.id)
-  @JoinColumn({ name: 'user_id' })
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  credit: string;
+
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  special_check: string;
+
+  @Column()
+  type_bank_account: TypeBankAccount;
+
+  @Column()
   userId: number;
+
+  @OneToOne(() => User)
+  @JoinColumn({ name: 'user_id' })
+  user: User;
 }

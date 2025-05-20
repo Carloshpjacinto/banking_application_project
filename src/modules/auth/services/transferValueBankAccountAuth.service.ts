@@ -7,6 +7,7 @@ import { TransferValueBankAccountAuthDTO } from '../dto/transfer-value-bank-acco
 import { verificationValueBankAccount } from '../tools/verificationValueBankAccount.tool';
 import { CalculationMoney } from '../tools/calculationMoney.tool';
 import * as bcrypt from 'bcrypt';
+import { TransferType } from 'src/modules/bankaccounthistory/entities/BankAccountHistory.entity';
 
 @Injectable()
 export class TransferValueBankAccountAuthService {
@@ -69,6 +70,7 @@ export class TransferValueBankAccountAuthService {
       );
 
       await this.createBankAccountHistoryService.execute({
+        transfer_type: TransferType.DEBIT_TRANSEFR,
         cpf_sender: sender.CPF,
         cpf_recipient: body.cpf_recipient,
         trans_value: body.trans_value,
