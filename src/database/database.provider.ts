@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { DataSource } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
@@ -18,7 +16,7 @@ export const databaseProviders = [
         database: process.env.DATABASE_NAME,
         entities: [__dirname + '/../**/entities/*.entity.{js,ts}'],
         namingStrategy: new SnakeNamingStrategy(),
-        logging: true,
+        logging: false,
         synchronize: true,
       });
 

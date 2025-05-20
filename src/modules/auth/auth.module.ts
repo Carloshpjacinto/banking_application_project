@@ -12,6 +12,7 @@ import { LoginBankAccountAuthService } from './services/loginBankAccountAuth.ser
 import { ProfileBankAccountAuthService } from './services/profileBankAccountAuth.service';
 import { TransferValueBankAccountAuthService } from './services/transferValueBankAccountAuth.service';
 import { BankaccounthistoryModule } from '../bankaccounthistory/bankaccounthistory.module';
+import { TypeOftranferModule } from '../type-oftranfer/type-oftranfer.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { BankaccounthistoryModule } from '../bankaccounthistory/bankaccounthisto
     forwardRef(() => UserModule),
     forwardRef(() => BankaccountModule),
     forwardRef(() => BankaccounthistoryModule),
+    forwardRef(() => TypeOftranferModule),
   ],
   controllers: [AuthController],
   providers: [

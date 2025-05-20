@@ -11,6 +11,7 @@ export class FindBankAccountByUserIdService {
   async execute(userId: number): Promise<Bankaccount> {
     const bankAccount = await this.bankAccountRepository.findOne({
       where: { userId: userId },
+      relations: ['user'],
     });
 
     if (!bankAccount) throw new Error(`Conta não encontrado`);

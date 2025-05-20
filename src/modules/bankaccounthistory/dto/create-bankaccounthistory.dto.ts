@@ -6,7 +6,7 @@ import {
   IsString,
   MaxLength,
 } from 'class-validator';
-import { TransferType } from '../entities/BankAccountHistory.entity';
+import { Situation, TransferType } from '../entities/BankAccountHistory.entity';
 
 export class CreateBankaccounthistoryDto {
   @IsString()
@@ -21,8 +21,12 @@ export class CreateBankaccounthistoryDto {
 
   @IsEnum(TransferType)
   @IsNotEmpty()
-  @MaxLength(12)
+  @MaxLength(255)
   transfer_type: TransferType;
+
+  @IsEnum(Situation)
+  @IsNotEmpty()
+  situation?: Situation;
 
   @IsDecimal()
   @IsNotEmpty()
