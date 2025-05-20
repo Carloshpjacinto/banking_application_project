@@ -8,9 +8,9 @@ export class FindBankAccountByAccountService {
     @Inject('BANK_ACCOUNT_REPOSITORY')
     private readonly bankAccountRepository: Repository<Bankaccount>,
   ) {}
-  async execute(account: string): Promise<Bankaccount> {
+  async execute(num_account: string): Promise<Bankaccount> {
     const bankAccount = await this.bankAccountRepository.findOne({
-      where: { num_account: account },
+      where: { num_account: num_account },
     });
 
     if (!bankAccount) throw new Error(`Conta não encontrado`);
