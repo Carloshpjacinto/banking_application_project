@@ -67,9 +67,9 @@ export class AuthController {
   @UseGuards(AuthGuard)
   @Patch('transfer')
   transferencia(
-    @UserRequest('CPF') cpf_sender: string,
+    @UserRequest('id') userId: number,
     @Body() body: TransferValueBankAccountAuthDTO,
   ) {
-    return this.transferValueBankAccountAuthService.execute(cpf_sender, body);
+    return this.transferValueBankAccountAuthService.execute(userId, body);
   }
 }
