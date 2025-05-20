@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
 import { CreateBankAccountService } from 'src/modules/bankaccount/services/createBankAccount.service';
 import { CreateBankAccountAuthDto } from '../dto/create-bankaccount-auth.dto';
 import { FindBankAccountByAccessService } from 'src/modules/bankaccount/services/findBankAccountByAccess.service';
 import { validateExisting } from '../tools/validateExistingUser.tool';
+import { hashData } from 'src/shared/tools/hashData.tool';
 
 @Injectable()
 export class RegisterBankAccountAuthService {
@@ -19,9 +21,13 @@ export class RegisterBankAccountAuthService {
 
       validateExisting({ bankAccount: existingBank, createBank: body });
 
+      body.access = await hashData(body.access);
+
       const bankaccount = await this.createBankAccountService.execute(body);
 
-      return bankaccount;
+      const { access, ...rest } = bankaccount;
+
+      return rest;
     } catch (err) {
       throw new Error(
         `Erro ao criar conta bancaria, tente novamente mais, ${err}`,

@@ -8,5 +8,6 @@ import { bankAccountHistoryProviders } from './bankaccounthistory.providers';
   imports: [DatabaseModule],
   controllers: [BankAccountHistoryController],
   providers: [CreateBankAccountHistoryService, ...bankAccountHistoryProviders],
+  exports: [CreateBankAccountHistoryService],
 })
 export class BankaccounthistoryModule {}

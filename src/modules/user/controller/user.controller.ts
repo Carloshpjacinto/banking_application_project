@@ -3,7 +3,6 @@ import { CreateUserService } from '../services/createUser.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { FindAllUserService } from '../services/findAllUser.service';
 import { FindUserByIdService } from '../services/findUserById.service';
-import { FindUserByCpfService } from '../services/findUserByCpf.service';
 
 @Controller('user')
 export class UserController {
@@ -11,7 +10,6 @@ export class UserController {
     private readonly createUserService: CreateUserService,
     private readonly findAllUserService: FindAllUserService,
     private readonly findUserByIdService: FindUserByIdService,
-    private readonly findUserByCpfService: FindUserByCpfService,
   ) {}
 
   @Post()
