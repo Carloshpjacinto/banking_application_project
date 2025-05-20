@@ -1,7 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Bankaccount } from '../entities/bankaccount.entity';
-import { CreateBankaccountDto } from '../dto/create-bankaccount.dto';
+import {
+  CreateBankaccountDto,
+  TypeBankAccount,
+} from '../dto/create-bankaccount.dto';
 
 @Injectable()
 export class CreateBankAccountService {
@@ -9,29 +12,44 @@ export class CreateBankAccountService {
     @Inject('BANK_ACCOUNT_REPOSITORY')
     private readonly bankAccountRepository: Repository<Bankaccount>,
   ) {}
-  async execute(body: CreateBankaccountDto): Promise<Bankaccount> {
+  async execute(
+    userId: number,
+    body: CreateBankaccountDto,
+  ): Promise<Bankaccount> {
     try {
-      const account_number = `81${Math.floor(Math.random() * 79) + 10}-${Math.floor(Math.random() * 9) + 1}`;
+      const account_number = `81${Math.floor(Math.random() * 79 + 10)}-${Math.floor(Math.random() * 9 + 1)}`;
 
-      const NewbankAccount = this.bankAccountRepository.create({
+      let newBankAccount: Bankaccount;
+
+      const baseData = {
         access: body.access,
-
         agency: '0001',
-
         num_account: account_number,
+        debit: '0',
+        userId: userId,
+        type_bank_account: body.type_bank_account,
+      };
 
-        debit: '500',
+      if (body.type_bank_account === TypeBankAccount.CREDIT) {
+        newBankAccount = this.bankAccountRepository.create({
+          ...baseData,
+          credit: '250',
+          special_check: '125',
+        });
+      } else if (body.type_bank_account === TypeBankAccount.CURRENT) {
+        newBankAccount = this.bankAccountRepository.create({
+          ...baseData,
+          credit: '0',
+          special_check: '250',
+        });
+      } else {
+        throw new Error('Tipo de conta bancária inválido.');
+      }
 
-        userId: body.userId,
-      });
-
-      await this.bankAccountRepository.save(NewbankAccount);
-
-      return NewbankAccount;
+      await this.bankAccountRepository.save(newBankAccount);
+      return newBankAccount;
     } catch (err) {
-      throw new Error(
-        `Erro ao criar conta bancaria, tente novamente mais, ${err}`,
-      );
+      throw new Error(`Erro ao criar conta bancária: ${err}`);
     }
   }
 }

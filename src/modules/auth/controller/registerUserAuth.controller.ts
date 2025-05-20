@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Patch,
   Post,
+  Request,
   UseGuards,
 } from '@nestjs/common';
 import { RegisterUserAuthService } from '../services/registerUserAuth.service';
@@ -40,10 +41,14 @@ export class AuthController {
   @Post('register/access')
   @HttpCode(HttpStatus.CREATED)
   registerBankAccount(
-    @UserRequest('id') userId: number,
-    @Body() { access }: CreateBankAccountAuthDto,
+    @Request() request: Request,
+    @Body() { access, type_bank_account }: CreateBankAccountAuthDto,
   ) {
-    return this.registerBankAccountAuthService.execute({ userId, access });
+    const userId = request.user.id;
+    return this.registerBankAccountAuthService.execute(userId, {
+      access,
+      type_bank_account,
+    });
   }
 
   @Post('login')

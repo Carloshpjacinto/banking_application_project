@@ -3,6 +3,7 @@ import { CreateBankAccountService } from '../services/createBankAccount.service'
 import { CreateBankaccountDto } from '../dto/create-bankaccount.dto';
 import { FindBankAccountByAccountService } from '../services/findBankAccountByAccount.service';
 import { FindBankAccountByUserIdService } from '../services/findBankAccountByUserId.service';
+import { UserRequest } from 'src/shared/decorators/user.decorator';
 
 @Controller('bankaccount')
 export class BankAccountController {
@@ -13,8 +14,11 @@ export class BankAccountController {
   ) {}
 
   @Post()
-  create(@Body() body: CreateBankaccountDto) {
-    return this.createBankAccountService.execute(body);
+  create(
+    @UserRequest('id') userId: number,
+    @Body() body: CreateBankaccountDto,
+  ) {
+    return this.createBankAccountService.execute(userId, body);
   }
 
   @Get()

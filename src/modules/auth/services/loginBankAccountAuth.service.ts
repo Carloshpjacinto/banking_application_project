@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { Injectable } from '@nestjs/common';
 import { FindBankAccountByAccountService } from 'src/modules/bankaccount/services/findBankAccountByAccount.service';
 import { LoginBankAccountAuthDTO } from '../dto/login-bank-account-auth.dto';
@@ -28,7 +26,7 @@ export class LoginBankAccountAuthService {
       }
 
       const user = await this.findUserByIdService.execute(
-        existingBankAccount.userId,
+        existingBankAccount.user.id,
       );
 
       if (!user) {

@@ -1,4 +1,9 @@
-import { IsNotEmpty, IsNumber, IsString, MaxLength } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsString, MaxLength } from 'class-validator';
+
+export enum TypeBankAccount {
+  CURRENT = 'CURRENT',
+  CREDIT = 'CREDIT',
+}
 
 export class CreateBankaccountDto {
   @IsString()
@@ -6,7 +11,7 @@ export class CreateBankaccountDto {
   @MaxLength(6)
   access: string;
 
-  @IsNumber()
+  @IsEnum(TypeBankAccount)
   @IsNotEmpty()
-  userId: number;
+  type_bank_account: TypeBankAccount;
 }

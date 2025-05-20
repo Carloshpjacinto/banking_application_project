@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
   CanActivate,
@@ -8,14 +8,14 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { FindUserByIdService } from 'src/modules/user/services/findUserById.service';
 import { ValidateJwtToken } from 'src/modules/auth/tools/validateJwtToken.tool';
+import { FindUserByIdService } from 'src/modules/user/services/findUserById.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
-    private readonly userService: FindUserByIdService,
     private readonly validateJwtToken: ValidateJwtToken,
+    private readonly findUserByIdService: FindUserByIdService,
   ) {}
 
   async canActivate(context: ExecutionContext) {
@@ -31,7 +31,9 @@ export class AuthGuard implements CanActivate {
 
     if (!valid || !decoded) throw new UnauthorizedException('Invalid token');
 
-    const user = await this.userService.execute(Number(decoded.sub));
+    const user = await this.findUserByIdService.execute(Number(decoded.sub));
+
+    if (!user) return false;
 
     request.user = user;
 

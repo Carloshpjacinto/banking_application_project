@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { CreateUserService } from '../services/createUser.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { FindAllUserService } from '../services/findAllUser.service';
 import { FindUserByIdService } from '../services/findUserById.service';
+import { ParamId } from 'src/shared/decorators/paramId.decorator';
 
 @Controller('user')
 export class UserController {
@@ -23,7 +24,7 @@ export class UserController {
   }
 
   @Get(':id')
-  findUserById(@Param() id: number) {
+  findUserById(@ParamId() id: number) {
     return this.findUserByIdService.execute(id);
   }
 }

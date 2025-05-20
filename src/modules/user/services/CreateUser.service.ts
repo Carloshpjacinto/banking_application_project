@@ -13,9 +13,7 @@ export class CreateUserService {
     try {
       const newUser = this.userRepository.create(data);
 
-      await this.userRepository.save(newUser);
-
-      return newUser;
+      return await this.userRepository.save(newUser);
     } catch (err) {
       throw new Error(
         `Erro ao criar conta bancaria, tente novamente mais, ${err}`,
