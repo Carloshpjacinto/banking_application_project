@@ -3,7 +3,7 @@ import { Repository } from 'typeorm';
 import { Bankaccount } from '../entities/bankaccount.entity';
 
 @Injectable()
-export class UpdateValueBankAccountService {
+export class DebitUpdateValueBankAccountService {
   constructor(
     @Inject('BANK_ACCOUNT_REPOSITORY')
     private readonly bankAccountRepository: Repository<Bankaccount>,

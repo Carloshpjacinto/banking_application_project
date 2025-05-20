@@ -16,7 +16,7 @@ export function CalculationMoney(
     transferType === TransferType.DEBIT_TRANSFER ||
     transferType === TransferType.CREDIT_TRANSFER
   ) {
-    return BalanceUserBankAccount + valueTransfer;
+    return BalanceUserBankAccount - valueTransfer;
   }
 
   throw new Error('Tipo de transferência não especificado ou inválido');

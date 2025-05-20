@@ -6,7 +6,9 @@ import { bankAccountProviders } from './bankAccount.providers';
 import { FindBankAccountByAccountService } from './services/findBankAccountByAccount.service';
 import { FindBankAccountByUserIdService } from './services/findBankAccountByUserId.service';
 import { FindBankAccountByAccessService } from './services/findBankAccountByAccess.service';
-import { UpdateValueBankAccountService } from './services/updateValueBankAccount.service';
+import { DebitUpdateValueBankAccountService } from './services/debitUpdateValueBankAccount.service';
+import { CreditUpdateValueBankAccountService } from './services/creditUpdateValueBankAccount.service';
+import { SpecialCheckUpdateValueBankAccountService } from './services/specialcheckUpdateValueBankAccount.service';
 
 @Module({
   imports: [DatabaseModule],
@@ -17,14 +19,18 @@ import { UpdateValueBankAccountService } from './services/updateValueBankAccount
     FindBankAccountByAccountService,
     FindBankAccountByUserIdService,
     FindBankAccountByAccessService,
-    UpdateValueBankAccountService,
+    DebitUpdateValueBankAccountService,
+    CreditUpdateValueBankAccountService,
+    SpecialCheckUpdateValueBankAccountService,
   ],
   exports: [
     CreateBankAccountService,
     FindBankAccountByAccessService,
     FindBankAccountByAccountService,
     FindBankAccountByUserIdService,
-    UpdateValueBankAccountService,
+    DebitUpdateValueBankAccountService,
+    CreditUpdateValueBankAccountService,
+    SpecialCheckUpdateValueBankAccountService,
   ],
 })
 export class BankaccountModule {}

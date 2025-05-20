@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { TransferValueBankAccountAuthDTO } from 'src/modules/auth/dto/transfer-value-bank-account-auth.dto';
 import { FindBankAccountByUserIdService } from 'src/modules/bankaccount/services/findBankAccountByUserId.service';
-import { UpdateValueBankAccountService } from 'src/modules/bankaccount/services/updateValueBankAccount.service';
+import { DebitUpdateValueBankAccountService } from 'src/modules/bankaccount/services/debitUpdateValueBankAccount.service';
 import { CreateBankAccountHistoryService } from 'src/modules/bankaccounthistory/services/createBankAccountHistory.service';
 import * as bcrypt from 'bcrypt';
 import { CalculationMoney } from 'src/modules/bankaccount/tools/calculationMoney.tool';
@@ -14,7 +14,7 @@ import {
 export class DepositTransferService {
   constructor(
     private readonly findBankAccountByUserIdService: FindBankAccountByUserIdService,
-    private readonly updateValueBankAccountService: UpdateValueBankAccountService,
+    private readonly debitUpdateValueBankAccountService: DebitUpdateValueBankAccountService,
     private readonly createBankAccountHistoryService: CreateBankAccountHistoryService,
   ) {}
 
@@ -33,10 +33,10 @@ export class DepositTransferService {
       const SenderCalculation = CalculationMoney(
         Number(senderBankAccount.debit),
         Number(body.trans_value),
-        TransferType.DEPOSIT,
+        TransferType.DEBIT_TRANSFER,
       );
 
-      await this.updateValueBankAccountService.execute(
+      await this.debitUpdateValueBankAccountService.execute(
         senderBankAccount.id,
         String(SenderCalculation),
       );
