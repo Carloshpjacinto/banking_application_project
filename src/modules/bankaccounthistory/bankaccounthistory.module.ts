@@ -3,11 +3,16 @@ import { CreateBankAccountHistoryService } from './services/createBankAccountHis
 import { BankAccountHistoryController } from './controller/bankAccountHistory.controller';
 import { DatabaseModule } from 'src/database/database.module';
 import { bankAccountHistoryProviders } from './bankaccounthistory.providers';
+import { FindBankAccountHistoryService } from './services/findBankAccountHistory.service';
 
 @Module({
   imports: [DatabaseModule],
   controllers: [BankAccountHistoryController],
-  providers: [CreateBankAccountHistoryService, ...bankAccountHistoryProviders],
-  exports: [CreateBankAccountHistoryService],
+  providers: [
+    ...bankAccountHistoryProviders,
+    FindBankAccountHistoryService,
+    CreateBankAccountHistoryService,
+  ],
+  exports: [CreateBankAccountHistoryService, FindBankAccountHistoryService],
 })
 export class BankaccounthistoryModule {}
