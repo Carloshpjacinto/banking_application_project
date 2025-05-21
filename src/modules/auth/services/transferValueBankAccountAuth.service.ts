@@ -1,7 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { DepositTransferService } from 'src/modules/type-oftranfer/services/depositTransfer.service';
-import { TransferValueBankAccountAuthDTO } from '../dto/transfer-value-bank-account-auth.dto';
-import { TransferType } from 'src/modules/bankaccounthistory/entities/BankAccountHistory.entity';
+import {
+  FunctionTransfer,
+  TransferType,
+  TransferValueBankAccountAuthDTO,
+} from '../dto/transfer-value-bank-account-auth.dto';
 import { DebitTransferTransferService } from 'src/modules/type-oftranfer/services/debitTransfer.service';
 import { CreditTransferTransferService } from 'src/modules/type-oftranfer/services/creditTransfer.service';
 
@@ -14,18 +17,30 @@ export class TransferValueBankAccountAuthService {
   ) {}
 
   async execute(userId: number, body: TransferValueBankAccountAuthDTO) {
-    if (body.type_transfer == TransferType.DEPOSIT) {
+    if (
+      body.type_transfer == TransferType.DEPOSIT &&
+      body.function_transfer != FunctionTransfer.TRANSFER_CREDIT &&
+      body.function_transfer != FunctionTransfer.TRANSFER_DEBIT
+    ) {
       await this.depositTransferService.execute(userId, body);
 
       return 'transferencia realizada com sucesso';
-    } else if (body.type_transfer == TransferType.DEBIT_TRANSFER) {
-      await this.debitTransferTransferService.execute(userId, body);
+    } else if (body.type_transfer == TransferType.PIX_TRANSFER) {
+      if (body.function_transfer == FunctionTransfer.TRANSFER_CREDIT) {
+        await this.creditTransferTransferService.execute(userId, body);
 
-      return 'transferencia realizada com sucesso';
-    } else if (body.type_transfer == TransferType.CREDIT_TRANSFER) {
-      await this.creditTransferTransferService.execute(userId, body);
+        return 'transferencia realizada com sucesso';
+      }
 
-      return 'transferencia realizada com sucesso';
+      if (body.function_transfer == FunctionTransfer.TRANSFER_DEBIT) {
+        await this.debitTransferTransferService.execute(userId, body);
+
+        return 'transferencia realizada com sucesso';
+      }
+    } else {
+      throw new Error(
+        `Erro ao realizar transação bancaria, tente novamente mais`,
+      );
     }
   }
 }

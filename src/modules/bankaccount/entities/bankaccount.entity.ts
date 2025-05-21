@@ -7,7 +7,11 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { TypeBankAccount } from '../dto/create-bankaccount.dto';
+
+export enum TypeBankAccount {
+  CURRENT_ACCOUNT = 'CURRENT_ACCOUNT',
+  SAVINGS_ACCOUNT = 'SAVINGS_ACCOUNT',
+}
 
 @Entity()
 export class Bankaccount {
@@ -25,13 +29,16 @@ export class Bankaccount {
   num_account: string;
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
-  debit: string;
+  account_balance: string;
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   credit: string;
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   special_check: string;
+
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  debit_account: string;
 
   @Column()
   type_bank_account: TypeBankAccount;

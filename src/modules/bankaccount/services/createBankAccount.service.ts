@@ -1,10 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { Bankaccount } from '../entities/bankaccount.entity';
-import {
-  CreateBankaccountDto,
-  TypeBankAccount,
-} from '../dto/create-bankaccount.dto';
+import { Bankaccount, TypeBankAccount } from '../entities/bankaccount.entity';
+import { CreateBankaccountDto } from '../dto/create-bankaccount.dto';
 
 @Injectable()
 export class CreateBankAccountService {
@@ -25,22 +22,23 @@ export class CreateBankAccountService {
         access: body.access,
         agency: '0001',
         num_account: account_number,
-        debit: '0',
-        userId: userId,
+        account_balance: '0',
+        debit_account: '0',
         type_bank_account: body.type_bank_account,
+        userId: userId,
       };
 
-      if (body.type_bank_account === TypeBankAccount.CREDIT) {
+      if (body.type_bank_account === TypeBankAccount.CURRENT_ACCOUNT) {
         newBankAccount = this.bankAccountRepository.create({
           ...baseData,
-          credit: '250',
-          special_check: '125',
+          credit: '500',
+          special_check: '250',
         });
-      } else if (body.type_bank_account === TypeBankAccount.CURRENT) {
+      } else if (body.type_bank_account === TypeBankAccount.SAVINGS_ACCOUNT) {
         newBankAccount = this.bankAccountRepository.create({
           ...baseData,
           credit: '0',
-          special_check: '250',
+          special_check: '0',
         });
       } else {
         throw new Error('Tipo de conta bancária inválido.');

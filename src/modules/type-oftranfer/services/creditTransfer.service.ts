@@ -1,18 +1,19 @@
 import { Injectable } from '@nestjs/common';
-import { TransferValueBankAccountAuthDTO } from 'src/modules/auth/dto/transfer-value-bank-account-auth.dto';
-import { FindBankAccountByUserIdService } from 'src/modules/bankaccount/services/findBankAccountByUserId.service';
-import { DebitUpdateValueBankAccountService } from 'src/modules/bankaccount/services/debitUpdateValueBankAccount.service';
-import { CalculationMoney } from 'src/modules/bankaccount/tools/calculationMoney.tool';
 import {
-  Situation,
   TransferType,
-} from 'src/modules/bankaccounthistory/entities/BankAccountHistory.entity';
+  TransferValueBankAccountAuthDTO,
+} from 'src/modules/auth/dto/transfer-value-bank-account-auth.dto';
+import { FindBankAccountByUserIdService } from 'src/modules/bankaccount/services/findBankAccountByUserId.service';
+import { DebitUpdateValueBankAccountService } from 'src/modules/bankaccount/services/debitUpdateValue.service';
+import { CalculationMoney } from 'src/shared/tools/calculationMoney.tool';
+import { Description } from 'src/modules/bankaccounthistory/entities/BankAccountHistory.entity';
 import { CreateBankAccountHistoryService } from 'src/modules/bankaccounthistory/services/createBankAccountHistory.service';
 import { FindUserByCpfService } from 'src/modules/user/services/findUserByCpf.service';
-import { CreditUpdateValueBankAccountService } from 'src/modules/bankaccount/services/creditUpdateValueBankAccount.service';
+import { CreditUpdateValueBankAccountService } from 'src/modules/bankaccount/services/creditUpdateValue.service';
 import { SpecialCheckUpdateValueBankAccountService } from 'src/modules/bankaccount/services/specialcheckUpdateValueBankAccount.service';
-import { TypeBankAccount } from 'src/modules/bankaccount/dto/create-bankaccount.dto';
 import * as bcrypt from 'bcrypt';
+import { TypeBankAccount } from 'src/modules/bankaccount/entities/bankaccount.entity';
+import { BalanceAccountUpdateValueService } from 'src/modules/bankaccount/services/balanceAccountUpdateValue.service';
 
 @Injectable()
 export class CreditTransferTransferService {
@@ -21,14 +22,13 @@ export class CreditTransferTransferService {
     private readonly debitUpdateValueBankAccountService: DebitUpdateValueBankAccountService,
     private readonly creditUpdateValueBankAccountService: CreditUpdateValueBankAccountService,
     private readonly specialCheckUpdateValueBankAccountService: SpecialCheckUpdateValueBankAccountService,
+    private readonly balanceAccountUpdateValueService: BalanceAccountUpdateValueService,
     private readonly createBankAccountHistoryService: CreateBankAccountHistoryService,
     private readonly findUserByCpfService: FindUserByCpfService,
   ) {}
 
   async execute(userId: number, body: TransferValueBankAccountAuthDTO) {
     try {
-      let SenderCalculation: number;
-
       const senderBankAccount =
         await this.findBankAccountByUserIdService.execute(userId);
 
@@ -39,46 +39,17 @@ export class CreditTransferTransferService {
         throw new Error('Error de autenticação, tente novamente');
       }
 
-      if (senderBankAccount.type_bank_account != TypeBankAccount.CREDIT) {
+      if (
+        senderBankAccount.type_bank_account != TypeBankAccount.CURRENT_ACCOUNT
+      ) {
         throw new Error(
           `Erro ao realizar transação bancaria, tente novamente mais`,
         );
       }
 
-      if (body.trans_value > senderBankAccount.credit) {
-        if (body.trans_value > senderBankAccount.special_check) {
-          throw new Error(`Saldo insuficiente`);
-        }
-        SenderCalculation = CalculationMoney(
-          Number(senderBankAccount.special_check),
-          Number(body.trans_value),
-          TransferType.DEBIT_TRANSFER,
-        );
-
-        await this.specialCheckUpdateValueBankAccountService.execute(
-          senderBankAccount.id,
-          String(SenderCalculation),
-        );
-      } else {
-        SenderCalculation = CalculationMoney(
-          Number(senderBankAccount.credit),
-          Number(body.trans_value),
-          TransferType.CREDIT_TRANSFER,
-        );
+      if (body.transfer_value > senderBankAccount.credit) {
+        throw new Error(`Saldo insuficiente`);
       }
-
-      await this.creditUpdateValueBankAccountService.execute(
-        senderBankAccount.id,
-        String(SenderCalculation),
-      );
-
-      await this.createBankAccountHistoryService.execute({
-        transfer_type: TransferType.CREDIT_TRANSFER,
-        cpf_sender: senderBankAccount.user.CPF,
-        cpf_recipient: body.cpf_recipient,
-        trans_value: body.trans_value,
-        situation: Situation.SENT,
-      });
 
       const recipient = await this.findUserByCpfService.execute(
         body.cpf_recipient,
@@ -90,26 +61,56 @@ export class CreditTransferTransferService {
         );
       }
 
+      const SenderCalculation = CalculationMoney(
+        Number(senderBankAccount.credit),
+        Number(body.transfer_value),
+        TransferType.PIX_TRANSFER,
+      );
+
+      const SenderCalculationDebit = CalculationMoney(
+        Number(senderBankAccount.debit_account),
+        Number(body.transfer_value),
+        TransferType.DEPOSIT,
+      );
+
+      await this.creditUpdateValueBankAccountService.execute(
+        senderBankAccount.id,
+        String(SenderCalculation),
+      );
+
+      await this.debitUpdateValueBankAccountService.execute(
+        senderBankAccount.id,
+        String(SenderCalculationDebit),
+      );
+
+      await this.createBankAccountHistoryService.execute({
+        transfer_type: TransferType.PIX_TRANSFER,
+        cpf_sender: senderBankAccount.user.CPF,
+        cpf_recipient: body.cpf_recipient,
+        transfer_value: body.transfer_value,
+        description: Description.SENT,
+      });
+
       const recipientBankAccount =
         await this.findBankAccountByUserIdService.execute(recipient.id);
 
       const recipientCalculation = CalculationMoney(
-        Number(recipientBankAccount.debit),
-        Number(body.trans_value),
+        Number(recipientBankAccount.account_balance),
+        Number(body.transfer_value),
         TransferType.DEPOSIT,
       );
 
-      await this.debitUpdateValueBankAccountService.execute(
+      await this.balanceAccountUpdateValueService.execute(
         recipientBankAccount.id,
         String(recipientCalculation),
       );
 
       await this.createBankAccountHistoryService.execute({
-        transfer_type: TransferType.CREDIT_TRANSFER,
+        transfer_type: TransferType.PIX_TRANSFER,
         cpf_sender: senderBankAccount.user.CPF,
         cpf_recipient: body.cpf_recipient,
-        trans_value: body.trans_value,
-        situation: Situation.RECEIVED,
+        transfer_value: body.transfer_value,
+        description: Description.RECEIVED,
       });
     } catch (err) {
       throw new Error(

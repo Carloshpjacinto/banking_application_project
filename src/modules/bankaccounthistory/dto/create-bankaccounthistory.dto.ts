@@ -6,7 +6,8 @@ import {
   IsString,
   MaxLength,
 } from 'class-validator';
-import { Situation, TransferType } from '../entities/BankAccountHistory.entity';
+import { Description } from '../entities/BankAccountHistory.entity';
+import { TransferType } from 'src/modules/auth/dto/transfer-value-bank-account-auth.dto';
 
 export class CreateBankaccounthistoryDto {
   @IsString()
@@ -24,11 +25,11 @@ export class CreateBankaccounthistoryDto {
   @MaxLength(255)
   transfer_type: TransferType;
 
-  @IsEnum(Situation)
+  @IsEnum(Description)
   @IsNotEmpty()
-  situation?: Situation;
+  description?: Description;
 
   @IsDecimal()
   @IsNotEmpty()
-  trans_value: string;
+  transfer_value: string;
 }

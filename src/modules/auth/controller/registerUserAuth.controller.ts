@@ -4,7 +4,6 @@ import {
   Get,
   HttpCode,
   HttpStatus,
-  Patch,
   Post,
   Request,
   UseGuards,
@@ -65,7 +64,7 @@ export class AuthController {
   }
 
   @UseGuards(AuthGuard)
-  @Patch('transfer')
+  @Post('transfer')
   transferencia(
     @UserRequest('id') userId: number,
     @Body() body: TransferValueBankAccountAuthDTO,

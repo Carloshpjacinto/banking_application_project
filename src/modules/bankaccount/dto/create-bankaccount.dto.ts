@@ -1,9 +1,5 @@
 import { IsEnum, IsNotEmpty, IsString, MaxLength } from 'class-validator';
-
-export enum TypeBankAccount {
-  CURRENT = 'CURRENT',
-  CREDIT = 'CREDIT',
-}
+import { TypeBankAccount } from '../entities/bankaccount.entity';
 
 export class CreateBankaccountDto {
   @IsString()
