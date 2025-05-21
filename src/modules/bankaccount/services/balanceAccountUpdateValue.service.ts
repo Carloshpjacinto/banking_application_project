@@ -8,9 +8,9 @@ export class BalanceAccountUpdateValueService {
     @Inject('BANK_ACCOUNT_REPOSITORY')
     private readonly bankAccountRepository: Repository<Bankaccount>,
   ) {}
-  async execute(userId: number, trans_value: string): Promise<string> {
+  async execute(userId: number, transfer_value: string): Promise<string> {
     await this.bankAccountRepository.update(userId, {
-      account_balance: trans_value,
+      account_balance: transfer_value,
     });
 
     return 'Valor transferido com sucesso!';
