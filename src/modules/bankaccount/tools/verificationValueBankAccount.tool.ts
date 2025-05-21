@@ -7,7 +7,7 @@ export function verificationValueBankAccount(
   credit: boolean,
 ): boolean {
   if (debit) {
-    if (Number(balanceUserBankAccount.debit) < valueTransfer) {
+    if (Number(balanceUserBankAccount.account_balance) < valueTransfer) {
       throw new Error(
         `Erro ao realizar transação bancaria, tente novamente mais`,
       );

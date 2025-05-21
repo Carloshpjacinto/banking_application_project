@@ -1,13 +1,8 @@
 import { IsDate } from 'class-validator';
+import { TransferType } from 'src/modules/auth/dto/transfer-value-bank-account-auth.dto';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-export enum TransferType {
-  DEBIT_TRANSFER = 'DEBIT_TRANSFER',
-  CREDIT_TRANSFER = 'CREDIT_TRANSFER',
-  DEPOSIT = 'DEPOSIT',
-}
-
-export enum Situation {
+export enum Description {
   RECEIVED = 'RECEIVED',
   SENT = 'SENT',
   DEPOSIT = 'DEPOSIT',
@@ -28,10 +23,10 @@ export class Bankaccounthistory {
   transfer_type: TransferType;
 
   @Column()
-  situation?: Situation;
+  description: Description;
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
-  trans_value: string;
+  transfer_value: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   @IsDate()

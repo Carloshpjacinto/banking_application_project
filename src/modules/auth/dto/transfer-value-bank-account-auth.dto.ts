@@ -1,5 +1,14 @@
 import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
-import { TransferType } from 'src/modules/bankaccounthistory/entities/BankAccountHistory.entity';
+
+export enum FunctionTransfer {
+  TRANSFER_CREDIT = 'TRANSFER_CREDIT',
+  TRANSFER_DEBIT = 'TRANSFER_DEBIT',
+}
+
+export enum TransferType {
+  PIX_TRANSFER = 'PIX_TRANSFER',
+  DEPOSIT = 'DEPOSIT',
+}
 
 export class TransferValueBankAccountAuthDTO {
   @IsEnum(TransferType)
@@ -10,9 +19,13 @@ export class TransferValueBankAccountAuthDTO {
   @IsNotEmpty()
   cpf_recipient: string;
 
+  @IsEnum(FunctionTransfer)
+  @IsNotEmpty()
+  function_transfer?: FunctionTransfer;
+
   @IsString()
   @IsNotEmpty()
-  trans_value: string;
+  transfer_value: string;
 
   @IsString()
   @IsNotEmpty()

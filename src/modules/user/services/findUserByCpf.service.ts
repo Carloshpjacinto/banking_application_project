@@ -11,8 +11,6 @@ export class FindUserByCpfService {
   async execute(cpf: string): Promise<User | null> {
     const user = await this.userRepository.findOne({ where: { CPF: cpf } });
 
-    console.log(cpf);
-
     return user;
   }
 }
