@@ -27,17 +27,12 @@
 
 ## 👨‍💻 Principais funcionalidades:
 
-#### Cadastro de usuário e criação de conta bancária
-
-#### Login de usuário
-
-#### Autenticação via JWT
-
-#### Dashboard do usuário
-
-#### Depósito de valores na conta
-
-#### Transferência de valores entre contas
+ Cadastro de usuário e criação de conta bancária
+ Login de usuário
+ Autenticação via JWT
+ Dashboard do usuário
+ Depósito de valores na conta
+ Transferência de valores entre contas
 
 ## </> Endpoints da API:
 
