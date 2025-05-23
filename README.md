@@ -55,7 +55,7 @@
 
 #### bash
 
-git clone https://github.com/Carloshpjacinto/banking_application_project.git
+git clone https://github.com/Carloshpjacinto/banking_application_project.git<br>
 cd banking_application_project
 
 ### 2. Instalação das dependencias
