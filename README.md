@@ -59,10 +59,14 @@ cd banking_application_project
 
 #### npm install
 
-### 3. Execução dos testes
+### 3. Configurar as variaveis de ambiente
+
+#### O arquivo .env.example serve como exemplo dos nomes das variáveis de ambiente usadas no projeto.
+
+### 4. Execução dos testes
 
 #### npm run test
 
-### 4. Execução da aplicação
+### 5. Execução da aplicação
 
 #### npm run start:dev
