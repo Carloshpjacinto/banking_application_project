@@ -1,3 +1,5 @@
+##### Para informações mais detalhadas, a documentação e os registros de ADR estão disponíveis em uma pasta do projeto.
+
 # 🏦 Banking Application - Backend
 
 ### API RESTful para gerenciamento de contas bancárias e transações financeiras. Construída com NestJS, TypeScript, e MySQL.
@@ -14,8 +16,6 @@
 </div>
 
 ---
-
-##### Para informações mais detalhadas, a documentação e os registros de ADR estão disponíveis em uma pasta do projeto.
 
 ## 📁 Arquitetura
 
