@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
-import { TransferType } from 'src/modules/auth/dto/transfer-value-bank-account-auth.dto';
+
+import { TransferType } from 'src/modules/bankaccounthistory/entities/BankAccountHistory.entity';
 
 export function CalculationMoney(
   currentBalance: number,

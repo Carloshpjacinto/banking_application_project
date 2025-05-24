@@ -1,10 +1,14 @@
 import { IsDate } from 'class-validator';
-import { TransferType } from 'src/modules/auth/dto/transfer-value-bank-account-auth.dto';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 export enum Description {
   RECEIVED = 'RECEIVED',
   SENT = 'SENT',
+  DEPOSIT = 'DEPOSIT',
+}
+
+export enum TransferType {
+  PIX_TRANSFER = 'PIX_TRANSFER',
   DEPOSIT = 'DEPOSIT',
 }
 

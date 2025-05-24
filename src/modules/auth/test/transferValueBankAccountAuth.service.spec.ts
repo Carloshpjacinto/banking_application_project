@@ -5,9 +5,9 @@ import { DebitTransferTransferService } from 'src/modules/type-oftranfer/service
 import { CreditTransferTransferService } from 'src/modules/type-oftranfer/services/creditTransfer.service';
 import {
   FunctionTransfer,
-  TransferType,
   TransferValueBankAccountAuthDTO,
 } from '../dto/transfer-value-bank-account-auth.dto';
+import { TransferType } from 'src/modules/bankaccounthistory/entities/BankAccountHistory.entity';
 
 describe('TransferValueBankAccountAuthService', () => {
   let service: TransferValueBankAccountAuthService;
@@ -107,7 +107,7 @@ describe('TransferValueBankAccountAuthService', () => {
       cpf_recipient: '',
     };
 
-    await expect(service.execute(userId, body)).rejects.toThrowError(
+    await expect(service.execute(userId, body)).rejects.toThrow(
       'Erro ao realizar transação bancaria, tente novamente mais',
     );
 

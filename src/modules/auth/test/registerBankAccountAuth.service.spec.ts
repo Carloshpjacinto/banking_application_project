@@ -47,18 +47,14 @@ describe('RegisterBankAccountAuthService', () => {
       type_bank_account: TypeBankAccount.CURRENT_ACCOUNT,
     };
 
-    // Mock findBankAccountByAccessService.execute para retornar null
     jest
       .spyOn(findBankAccountByAccessService, 'execute')
       .mockResolvedValue(null);
 
-    // Mock validateExisting para não lançar erro
     jest.spyOn(validateModule, 'validateExisting').mockImplementation(() => {});
 
-    // Mock hashData para retornar string "hashedAccess"
     jest.spyOn(hashModule, 'hashData').mockResolvedValue('hashedAccess');
 
-    // Mock createBankAccountService.execute para retornar objeto falso (exemplo simplificado)
     const fakeBankAccount = {
       id: 1,
       userId,
@@ -83,7 +79,6 @@ describe('RegisterBankAccountAuthService', () => {
 
     const result = await service.execute(userId, dto);
 
-    // Verifica os campos principais, sem exigir tudo exatamente igual
     expect(result).toEqual(
       expect.objectContaining({
         id: expect.any(Number),

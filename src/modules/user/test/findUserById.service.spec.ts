@@ -37,7 +37,6 @@ describe('FindUserByIdService', () => {
   });
 
   it('should return a user by id', async () => {
-    // Simula retorno de um usuário ao buscar por ID
     (userRepository.findOne as jest.Mock).mockResolvedValue(mockUser);
 
     const result = await service.execute(mockUser.id);

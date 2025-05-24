@@ -8,12 +8,10 @@ describe('GenerateJwtToken', () => {
   let generateJwtToken: GenerateJwtToken;
 
   beforeEach(() => {
-    // Criação de um mock do JwtService
     jwtService = {
       sign: jest.fn().mockReturnValue('mocked-jwt-token'),
     } as unknown as JwtService;
 
-    // Injeção do mock no serviço
     generateJwtToken = new GenerateJwtToken(jwtService);
   });
 

@@ -3,10 +3,10 @@ import { CreateBankAccountHistoryService } from '../services/createBankAccountHi
 import {
   Bankaccounthistory,
   Description,
+  TransferType,
 } from '../entities/BankAccountHistory.entity';
 import { Repository } from 'typeorm';
 import { BANK_ACCOUNT_HISTORY_REPOSITORY } from '../utils/repositoriesToken';
-import { TransferType } from 'src/modules/auth/dto/transfer-value-bank-account-auth.dto';
 
 let service: CreateBankAccountHistoryService;
 let bankAccountHistoryRepository: Repository<Bankaccounthistory>;

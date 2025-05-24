@@ -8,21 +8,20 @@ import { LoginBankAccountAuthService } from '../services/loginBankAccountAuth.se
 import { ProfileBankAccountAuthService } from '../services/profileBankAccountAuth.service';
 import { TransferValueBankAccountAuthService } from '../services/transferValueBankAccountAuth.service';
 import { TypeBankAccount } from 'src/modules/bankaccount/entities/bankaccount.entity';
-import {
-  FunctionTransfer,
-  TransferType,
-} from '../dto/transfer-value-bank-account-auth.dto';
+import { FunctionTransfer } from '../dto/transfer-value-bank-account-auth.dto';
 import { AuthGuard } from 'src/shared/guards/auth.guard';
+import { FindBankAccountHistoryAuthService } from '../services/findBankAccountHistoryAuth.service';
+import { TransferType } from 'src/modules/bankaccounthistory/entities/BankAccountHistory.entity';
 
 describe('AuthController', () => {
   let authController: AuthController;
 
-  // Mocks dos serviços
   const mockRegisterUserAuthService = { execute: jest.fn() };
   const mockRegisterBankAccountAuthService = { execute: jest.fn() };
   const mockLoginBankAccountAuthService = { execute: jest.fn() };
   const mockProfileBankAccountAuthService = { execute: jest.fn() };
   const mockTransferValueBankAccountAuthService = { execute: jest.fn() };
+  const mockTFindBankAccountHistoryAuthService = { execute: jest.fn() };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -48,10 +47,14 @@ describe('AuthController', () => {
           provide: TransferValueBankAccountAuthService,
           useValue: mockTransferValueBankAccountAuthService,
         },
+        {
+          provide: FindBankAccountHistoryAuthService,
+          useValue: mockTFindBankAccountHistoryAuthService,
+        },
       ],
     })
-      .overrideGuard(AuthGuard) // <-- Adicione isso
-      .useValue({ canActivate: () => true }) // Mock simples que permite todos os acessos
+      .overrideGuard(AuthGuard)
+      .useValue({ canActivate: () => true })
       .compile();
 
     authController = module.get<AuthController>(AuthController);
@@ -136,7 +139,7 @@ describe('AuthController', () => {
         'transfer_success',
       );
 
-      const result = await authController.transferencia(1, dto);
+      const result = await authController.transfer(1, dto);
 
       expect(
         mockTransferValueBankAccountAuthService.execute,

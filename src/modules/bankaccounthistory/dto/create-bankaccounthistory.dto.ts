@@ -6,8 +6,10 @@ import {
   IsString,
   MaxLength,
 } from 'class-validator';
-import { Description } from '../entities/BankAccountHistory.entity';
-import { TransferType } from 'src/modules/auth/dto/transfer-value-bank-account-auth.dto';
+import {
+  Description,
+  TransferType,
+} from '../entities/BankAccountHistory.entity';
 
 export class CreateBankaccounthistoryDto {
   @IsString()

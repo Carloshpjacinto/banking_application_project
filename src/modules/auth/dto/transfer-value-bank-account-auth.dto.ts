@@ -1,13 +1,9 @@
 import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import { TransferType } from 'src/modules/bankaccounthistory/entities/BankAccountHistory.entity';
 
 export enum FunctionTransfer {
   TRANSFER_CREDIT = 'TRANSFER_CREDIT',
   TRANSFER_DEBIT = 'TRANSFER_DEBIT',
-}
-
-export enum TransferType {
-  PIX_TRANSFER = 'PIX_TRANSFER',
-  DEPOSIT = 'DEPOSIT',
 }
 
 export class TransferValueBankAccountAuthDTO {

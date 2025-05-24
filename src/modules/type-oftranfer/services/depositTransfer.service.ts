@@ -1,15 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import {
-  TransferType,
-  TransferValueBankAccountAuthDTO,
-} from 'src/modules/auth/dto/transfer-value-bank-account-auth.dto';
+import { TransferValueBankAccountAuthDTO } from 'src/modules/auth/dto/transfer-value-bank-account-auth.dto';
 import { FindBankAccountByUserIdService } from 'src/modules/bankaccount/services/findBankAccountByUserId.service';
 import { BalanceAccountUpdateValueService } from 'src/modules/bankaccount/services/balanceAccountUpdateValue.service';
 import { CreateBankAccountHistoryService } from 'src/modules/bankaccounthistory/services/createBankAccountHistory.service';
-import * as bcrypt from 'bcrypt';
 import { CalculationMoney } from 'src/shared/tools/calculationMoney.tool';
-import { Description } from 'src/modules/bankaccounthistory/entities/BankAccountHistory.entity';
-import { SpecialCheckUpdateValueBankAccountService } from 'src/modules/bankaccount/services/specialcheckUpdateValueBankAccount.service';
+import {
+  Description,
+  TransferType,
+} from 'src/modules/bankaccounthistory/entities/BankAccountHistory.entity';
+import { SpecialCheckUpdateValueService } from 'src/modules/bankaccount/services/specialcheckUpdateValue.service';
 import { TypeBankAccount } from 'src/modules/bankaccount/entities/bankaccount.entity';
 
 @Injectable()
@@ -17,23 +16,16 @@ export class DepositTransferService {
   constructor(
     private readonly findBankAccountByUserIdService: FindBankAccountByUserIdService,
     private readonly balanceAccountUpdateValueService: BalanceAccountUpdateValueService,
-    private readonly specialCheckUpdateValueBankAccountService: SpecialCheckUpdateValueBankAccountService,
+    private readonly specialCheckUpdateValueService: SpecialCheckUpdateValueService,
     private readonly createBankAccountHistoryService: CreateBankAccountHistoryService,
   ) {}
 
   async execute(userId: number, body: TransferValueBankAccountAuthDTO) {
     try {
-      const valueSpecialCheck: string = '125';
+      const valueSpecialCheck: string = '250';
 
       const senderBankAccount =
         await this.findBankAccountByUserIdService.execute(userId);
-
-      if (
-        !senderBankAccount ||
-        !(await bcrypt.compare(body.access, senderBankAccount.access))
-      ) {
-        throw new Error('Error de autenticação, tente novamente');
-      }
 
       if (
         senderBankAccount.type_bank_account ==
@@ -49,7 +41,7 @@ export class DepositTransferService {
           TransferType.DEPOSIT,
         );
 
-        await this.specialCheckUpdateValueBankAccountService.execute(
+        await this.specialCheckUpdateValueService.execute(
           senderBankAccount.id,
           String(SenderCalculationSpecialCheck),
         );
@@ -57,15 +49,9 @@ export class DepositTransferService {
         const calculationDebitSpecialCheck =
           Number(body.transfer_value) - DebitSpecialCheck;
 
-        const SenderCalculation = CalculationMoney(
-          Number(senderBankAccount.account_balance),
-          Number(calculationDebitSpecialCheck),
-          TransferType.DEPOSIT,
-        );
-
         await this.balanceAccountUpdateValueService.execute(
           senderBankAccount.id,
-          String(SenderCalculation),
+          String(calculationDebitSpecialCheck),
         );
 
         await this.createBankAccountHistoryService.execute({

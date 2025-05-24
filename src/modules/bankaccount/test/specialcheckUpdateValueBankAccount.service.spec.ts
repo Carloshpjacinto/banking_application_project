@@ -1,20 +1,20 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { BANK_ACCOUNT_REPOSITORY } from '../utils/repositoriesToken';
-import { SpecialCheckUpdateValueBankAccountService } from '../services/specialcheckUpdateValueBankAccount.service';
+import { SpecialCheckUpdateValueService } from '../services/specialcheckUpdateValue.service';
 import { Bankaccount } from '../entities/bankaccount.entity';
 import { Repository } from 'typeorm';
 
-let service: SpecialCheckUpdateValueBankAccountService;
+let service: SpecialCheckUpdateValueService;
 let bankAccountRepository: Partial<Repository<Bankaccount>>;
 
 const userId = 1;
 const transfer_value = '150';
 
-describe('CreditUpdateValueBankAccountService', () => {
+describe('SpecialcheckUpdateValueService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        SpecialCheckUpdateValueBankAccountService,
+        SpecialCheckUpdateValueService,
         {
           provide: BANK_ACCOUNT_REPOSITORY,
           useValue: {
@@ -24,8 +24,8 @@ describe('CreditUpdateValueBankAccountService', () => {
       ],
     }).compile();
 
-    service = module.get<SpecialCheckUpdateValueBankAccountService>(
-      SpecialCheckUpdateValueBankAccountService,
+    service = module.get<SpecialCheckUpdateValueService>(
+      SpecialCheckUpdateValueService,
     );
     bankAccountRepository = module.get<Repository<Bankaccount>>(
       BANK_ACCOUNT_REPOSITORY,

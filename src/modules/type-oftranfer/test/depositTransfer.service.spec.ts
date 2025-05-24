@@ -2,13 +2,15 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { DepositTransferService } from '../services/depositTransfer.service';
 import { FindBankAccountByUserIdService } from 'src/modules/bankaccount/services/findBankAccountByUserId.service';
 import { BalanceAccountUpdateValueService } from 'src/modules/bankaccount/services/balanceAccountUpdateValue.service';
-import { SpecialCheckUpdateValueBankAccountService } from 'src/modules/bankaccount/services/specialcheckUpdateValueBankAccount.service';
+import { SpecialCheckUpdateValueService } from 'src/modules/bankaccount/services/specialcheckUpdateValue.service';
 import { CreateBankAccountHistoryService } from 'src/modules/bankaccounthistory/services/createBankAccountHistory.service';
 import * as bcrypt from 'bcrypt';
 import { TransferValueBankAccountAuthDTO } from 'src/modules/auth/dto/transfer-value-bank-account-auth.dto';
-import { TransferType } from 'src/modules/auth/dto/transfer-value-bank-account-auth.dto';
 import { TypeBankAccount } from 'src/modules/bankaccount/entities/bankaccount.entity';
-import { Description } from 'src/modules/bankaccounthistory/entities/BankAccountHistory.entity';
+import {
+  Description,
+  TransferType,
+} from 'src/modules/bankaccounthistory/entities/BankAccountHistory.entity';
 
 jest.mock('bcrypt');
 
@@ -17,7 +19,7 @@ describe('DepositTransferService', () => {
 
   const findBankAccountByUserIdService = { execute: jest.fn() };
   const balanceAccountUpdateValueService = { execute: jest.fn() };
-  const specialCheckUpdateValueBankAccountService = { execute: jest.fn() };
+  const specialCheckUpdateValueService = { execute: jest.fn() };
   const createBankAccountHistoryService = { execute: jest.fn() };
 
   beforeEach(async () => {
@@ -33,8 +35,8 @@ describe('DepositTransferService', () => {
           useValue: balanceAccountUpdateValueService,
         },
         {
-          provide: SpecialCheckUpdateValueBankAccountService,
-          useValue: specialCheckUpdateValueBankAccountService,
+          provide: SpecialCheckUpdateValueService,
+          useValue: specialCheckUpdateValueService,
         },
         {
           provide: CreateBankAccountHistoryService,
@@ -84,9 +86,7 @@ describe('DepositTransferService', () => {
       }),
     );
 
-    expect(
-      specialCheckUpdateValueBankAccountService.execute,
-    ).not.toHaveBeenCalled();
+    expect(specialCheckUpdateValueService.execute).not.toHaveBeenCalled();
   });
 
   it('should perform a deposit and update special check when below 125', async () => {
@@ -112,9 +112,10 @@ describe('DepositTransferService', () => {
 
     await service.execute(userId, body);
 
-    expect(
-      specialCheckUpdateValueBankAccountService.execute,
-    ).toHaveBeenCalledWith(senderBankAccount.id, expect.any(String));
+    expect(specialCheckUpdateValueService.execute).toHaveBeenCalledWith(
+      senderBankAccount.id,
+      expect.any(String),
+    );
 
     expect(balanceAccountUpdateValueService.execute).toHaveBeenCalledWith(
       senderBankAccount.id,
