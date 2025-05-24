@@ -1,19 +1,19 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CreditTransferTransferService } from '../services/creditTransfer.service';
 import { FindBankAccountByUserIdService } from 'src/modules/bankaccount/services/findBankAccountByUserId.service';
-import { DebitUpdateValueBankAccountService } from 'src/modules/bankaccount/services/debitUpdateValue.service';
-import { CreditUpdateValueBankAccountService } from 'src/modules/bankaccount/services/creditUpdateValue.service';
-import { SpecialCheckUpdateValueBankAccountService } from 'src/modules/bankaccount/services/specialcheckUpdateValueBankAccount.service';
+import { DebitUpdateValueService } from 'src/modules/bankaccount/services/debitUpdateValue.service';
+import { CreditUpdateValueService } from 'src/modules/bankaccount/services/creditUpdateValue.service';
+import { SpecialCheckUpdateValueService } from 'src/modules/bankaccount/services/specialcheckUpdateValue.service';
 import { BalanceAccountUpdateValueService } from 'src/modules/bankaccount/services/balanceAccountUpdateValue.service';
 import { CreateBankAccountHistoryService } from 'src/modules/bankaccounthistory/services/createBankAccountHistory.service';
 import { FindUserByCpfService } from 'src/modules/user/services/findUserByCpf.service';
 import * as bcrypt from 'bcrypt';
-import {
-  TransferType,
-  TransferValueBankAccountAuthDTO,
-} from 'src/modules/auth/dto/transfer-value-bank-account-auth.dto';
+import { TransferValueBankAccountAuthDTO } from 'src/modules/auth/dto/transfer-value-bank-account-auth.dto';
 import { TypeBankAccount } from 'src/modules/bankaccount/entities/bankaccount.entity';
-import { Description } from 'src/modules/bankaccounthistory/entities/BankAccountHistory.entity';
+import {
+  Description,
+  TransferType,
+} from 'src/modules/bankaccounthistory/entities/BankAccountHistory.entity';
 
 jest.mock('bcrypt');
 
@@ -25,15 +25,15 @@ describe('CreditTransferTransferService', () => {
     execute: jest.fn(),
   };
 
-  const debitUpdateValueBankAccountService = {
+  const debitUpdateValueService = {
     execute: jest.fn(),
   };
 
-  const creditUpdateValueBankAccountService = {
+  const creditUpdateValueService = {
     execute: jest.fn(),
   };
 
-  const specialCheckUpdateValueBankAccountService = {
+  const specialCheckUpdateValueService = {
     execute: jest.fn(),
   };
 
@@ -58,16 +58,16 @@ describe('CreditTransferTransferService', () => {
           useValue: findBankAccountByUserIdService,
         },
         {
-          provide: DebitUpdateValueBankAccountService,
-          useValue: debitUpdateValueBankAccountService,
+          provide: DebitUpdateValueService,
+          useValue: debitUpdateValueService,
         },
         {
-          provide: CreditUpdateValueBankAccountService,
-          useValue: creditUpdateValueBankAccountService,
+          provide: CreditUpdateValueService,
+          useValue: creditUpdateValueService,
         },
         {
-          provide: SpecialCheckUpdateValueBankAccountService,
-          useValue: specialCheckUpdateValueBankAccountService,
+          provide: SpecialCheckUpdateValueService,
+          useValue: specialCheckUpdateValueService,
         },
         {
           provide: BalanceAccountUpdateValueService,
@@ -87,7 +87,6 @@ describe('CreditTransferTransferService', () => {
   });
 
   it('should execute PIX transfer successfully', async () => {
-    // arrange
     const userId = 1;
     const body: TransferValueBankAccountAuthDTO = {
       access: '010203',
@@ -114,24 +113,21 @@ describe('CreditTransferTransferService', () => {
       account_balance: 300,
     };
 
-    // mocks
     findBankAccountByUserIdService.execute
-      .mockResolvedValueOnce(senderBankAccount) // sender
-      .mockResolvedValueOnce(recipientBankAccount); // recipient
+      .mockResolvedValueOnce(senderBankAccount)
+      .mockResolvedValueOnce(recipientBankAccount);
 
     findUserByCpfService.execute.mockResolvedValue(recipient);
     (bcrypt.compare as jest.Mock).mockResolvedValue(true);
 
-    // act
     await service.execute(userId, body);
 
-    // assert
     expect(findBankAccountByUserIdService.execute).toHaveBeenCalledTimes(2);
     expect(findUserByCpfService.execute).toHaveBeenCalledWith(
       body.cpf_recipient,
     );
-    expect(creditUpdateValueBankAccountService.execute).toHaveBeenCalled();
-    expect(debitUpdateValueBankAccountService.execute).toHaveBeenCalled();
+    expect(creditUpdateValueService.execute).toHaveBeenCalled();
+    expect(debitUpdateValueService.execute).toHaveBeenCalled();
     expect(createBankAccountHistoryService.execute).toHaveBeenCalledWith(
       expect.objectContaining({
         transfer_type: TransferType.PIX_TRANSFER,

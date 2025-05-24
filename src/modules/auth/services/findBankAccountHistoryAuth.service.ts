@@ -3,7 +3,7 @@ import { FindBankAccountHistoryService } from 'src/modules/bankaccounthistory/se
 import { Description } from 'src/modules/bankaccounthistory/entities/BankAccountHistory.entity';
 
 @Injectable()
-export class FindBankAccountHistoryReceivedAuthService {
+export class FindBankAccountHistoryAuthService {
   constructor(
     private readonly findBankAccountHistoryService: FindBankAccountHistoryService,
   ) {}

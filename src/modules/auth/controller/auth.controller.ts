@@ -5,6 +5,7 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  Query,
   Request,
   UseGuards,
 } from '@nestjs/common';
@@ -19,6 +20,8 @@ import { LoginBankAccountAuthService } from '../services/loginBankAccountAuth.se
 import { ProfileBankAccountAuthService } from '../services/profileBankAccountAuth.service';
 import { TransferValueBankAccountAuthDTO } from '../dto/transfer-value-bank-account-auth.dto';
 import { TransferValueBankAccountAuthService } from '../services/transferValueBankAccountAuth.service';
+import { Description } from 'src/modules/bankaccounthistory/entities/BankAccountHistory.entity';
+import { FindBankAccountHistoryAuthService } from '../services/findBankAccountHistoryAuth.service';
 
 @Controller('auth')
 export class AuthController {
@@ -28,6 +31,7 @@ export class AuthController {
     private readonly loginBankAccountAuthService: LoginBankAccountAuthService,
     private readonly profileBankAccountAuthService: ProfileBankAccountAuthService,
     private readonly transferValueBankAccountAuthService: TransferValueBankAccountAuthService,
+    private readonly findBankAccountHistoryService: FindBankAccountHistoryAuthService,
   ) {}
 
   @Post('register')
@@ -65,10 +69,20 @@ export class AuthController {
 
   @UseGuards(AuthGuard)
   @Post('transfer')
-  transferencia(
+  transfer(
     @UserRequest('id') userId: number,
     @Body() body: TransferValueBankAccountAuthDTO,
   ) {
     return this.transferValueBankAccountAuthService.execute(userId, body);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('bankaccounthistory')
+  @HttpCode(HttpStatus.OK)
+  getHistory(
+    @Query('description') description: Description,
+    @UserRequest('CPF') cpf: string,
+  ) {
+    return this.findBankAccountHistoryService.execute(cpf, description);
   }
 }

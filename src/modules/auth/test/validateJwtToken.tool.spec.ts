@@ -15,7 +15,7 @@ describe('ValidateJwtToken', () => {
     validateJwtToken = new ValidateJwtToken(jwtService);
   });
 
-  it('deve retornar válido e o payload decodificado quando o token for válido', async () => {
+  it('should return valid and the decoded payload when the token is valid', async () => {
     const mockToken = 'token.valido.aqui';
     const mockDecoded = { sub: '123', name: 'Carlos' };
 
@@ -35,7 +35,7 @@ describe('ValidateJwtToken', () => {
     });
   });
 
-  it('deve retornar inválido com mensagem de erro quando o token for inválido', async () => {
+  it('should return invalid with an error message when the token is invalid', async () => {
     const mockToken = 'token.invalido';
     const mockError = new Error('Token inválido ou expirado');
 

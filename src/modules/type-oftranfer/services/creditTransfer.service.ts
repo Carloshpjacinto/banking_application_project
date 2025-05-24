@@ -1,17 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import {
-  TransferType,
-  TransferValueBankAccountAuthDTO,
-} from 'src/modules/auth/dto/transfer-value-bank-account-auth.dto';
+import { TransferValueBankAccountAuthDTO } from 'src/modules/auth/dto/transfer-value-bank-account-auth.dto';
 import { FindBankAccountByUserIdService } from 'src/modules/bankaccount/services/findBankAccountByUserId.service';
-import { DebitUpdateValueBankAccountService } from 'src/modules/bankaccount/services/debitUpdateValue.service';
+import { DebitUpdateValueService } from 'src/modules/bankaccount/services/debitUpdateValue.service';
 import { CalculationMoney } from 'src/shared/tools/calculationMoney.tool';
-import { Description } from 'src/modules/bankaccounthistory/entities/BankAccountHistory.entity';
+import {
+  Description,
+  TransferType,
+} from 'src/modules/bankaccounthistory/entities/BankAccountHistory.entity';
 import { CreateBankAccountHistoryService } from 'src/modules/bankaccounthistory/services/createBankAccountHistory.service';
 import { FindUserByCpfService } from 'src/modules/user/services/findUserByCpf.service';
-import { CreditUpdateValueBankAccountService } from 'src/modules/bankaccount/services/creditUpdateValue.service';
-import { SpecialCheckUpdateValueBankAccountService } from 'src/modules/bankaccount/services/specialcheckUpdateValueBankAccount.service';
-import * as bcrypt from 'bcrypt';
+import { CreditUpdateValueService } from 'src/modules/bankaccount/services/creditUpdateValue.service';
 import { TypeBankAccount } from 'src/modules/bankaccount/entities/bankaccount.entity';
 import { BalanceAccountUpdateValueService } from 'src/modules/bankaccount/services/balanceAccountUpdateValue.service';
 
@@ -19,9 +17,8 @@ import { BalanceAccountUpdateValueService } from 'src/modules/bankaccount/servic
 export class CreditTransferTransferService {
   constructor(
     private readonly findBankAccountByUserIdService: FindBankAccountByUserIdService,
-    private readonly debitUpdateValueBankAccountService: DebitUpdateValueBankAccountService,
-    private readonly creditUpdateValueBankAccountService: CreditUpdateValueBankAccountService,
-    private readonly specialCheckUpdateValueBankAccountService: SpecialCheckUpdateValueBankAccountService,
+    private readonly debitUpdateValueService: DebitUpdateValueService,
+    private readonly creditUpdateValueService: CreditUpdateValueService,
     private readonly balanceAccountUpdateValueService: BalanceAccountUpdateValueService,
     private readonly createBankAccountHistoryService: CreateBankAccountHistoryService,
     private readonly findUserByCpfService: FindUserByCpfService,
@@ -31,13 +28,6 @@ export class CreditTransferTransferService {
     try {
       const senderBankAccount =
         await this.findBankAccountByUserIdService.execute(userId);
-
-      if (
-        !senderBankAccount ||
-        !(await bcrypt.compare(body.access, senderBankAccount.access))
-      ) {
-        throw new Error('Error de autenticação, tente novamente');
-      }
 
       if (
         senderBankAccount.type_bank_account != TypeBankAccount.CURRENT_ACCOUNT
@@ -73,12 +63,12 @@ export class CreditTransferTransferService {
         TransferType.DEPOSIT,
       );
 
-      await this.creditUpdateValueBankAccountService.execute(
+      await this.creditUpdateValueService.execute(
         senderBankAccount.id,
         String(SenderCalculation),
       );
 
-      await this.debitUpdateValueBankAccountService.execute(
+      await this.debitUpdateValueService.execute(
         senderBankAccount.id,
         String(SenderCalculationDebit),
       );

@@ -29,7 +29,7 @@ const mockBankAccount: Bankaccount = {
   user: userMock,
 };
 
-describe('FindUserByIdService', () => {
+describe('FindbankAccountByUserIdService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -53,8 +53,7 @@ describe('FindUserByIdService', () => {
     expect(service).toBeDefined();
   });
 
-  it('should return a user by id', async () => {
-    // Simula retorno de um usuário ao buscar por ID
+  it('should return a bank account by user id', async () => {
     (userRepository.findOne as jest.Mock).mockResolvedValue(mockBankAccount);
 
     const result = await service.execute(mockBankAccount.userId);

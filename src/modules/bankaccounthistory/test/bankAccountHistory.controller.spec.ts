@@ -3,8 +3,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { BankAccountHistoryController } from '../controller/bankAccountHistory.controller';
 import { CreateBankAccountHistoryService } from '../services/createBankAccountHistory.service';
 import { CreateBankaccounthistoryDto } from '../dto/create-bankaccounthistory.dto';
-import { TransferType } from 'src/modules/auth/dto/transfer-value-bank-account-auth.dto';
-import { Description } from '../entities/BankAccountHistory.entity';
+import {
+  Description,
+  TransferType,
+} from '../entities/BankAccountHistory.entity';
 
 describe('BankAccountHistoryController', () => {
   let controller: BankAccountHistoryController;

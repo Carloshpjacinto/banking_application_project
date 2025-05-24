@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { DebitTransferTransferService } from '../services/debitTransfer.service';
 import { FindBankAccountByUserIdService } from 'src/modules/bankaccount/services/findBankAccountByUserId.service';
-import { SpecialCheckUpdateValueBankAccountService } from 'src/modules/bankaccount/services/specialcheckUpdateValueBankAccount.service';
+import { SpecialCheckUpdateValueService } from 'src/modules/bankaccount/services/specialcheckUpdateValue.service';
 import { BalanceAccountUpdateValueService } from 'src/modules/bankaccount/services/balanceAccountUpdateValue.service';
 import { CreateBankAccountHistoryService } from 'src/modules/bankaccounthistory/services/createBankAccountHistory.service';
 import { FindUserByCpfService } from 'src/modules/user/services/findUserByCpf.service';
+import { TransferValueBankAccountAuthDTO } from 'src/modules/auth/dto/transfer-value-bank-account-auth.dto';
 import {
+  Description,
   TransferType,
-  TransferValueBankAccountAuthDTO,
-} from 'src/modules/auth/dto/transfer-value-bank-account-auth.dto';
-import { Description } from 'src/modules/bankaccounthistory/entities/BankAccountHistory.entity';
+} from 'src/modules/bankaccounthistory/entities/BankAccountHistory.entity';
 import * as bcrypt from 'bcrypt';
 
 jest.mock('bcrypt');
@@ -21,7 +21,7 @@ describe('DebitTransferTransferService', () => {
     execute: jest.fn(),
   };
 
-  const specialCheckUpdateValueBankAccountService = {
+  const specialCheckUpdateValueService = {
     execute: jest.fn(),
   };
 
@@ -46,8 +46,8 @@ describe('DebitTransferTransferService', () => {
           useValue: findBankAccountByUserIdService,
         },
         {
-          provide: SpecialCheckUpdateValueBankAccountService,
-          useValue: specialCheckUpdateValueBankAccountService,
+          provide: SpecialCheckUpdateValueService,
+          useValue: specialCheckUpdateValueService,
         },
         {
           provide: BalanceAccountUpdateValueService,
@@ -94,8 +94,8 @@ describe('DebitTransferTransferService', () => {
 
     // mocks
     findBankAccountByUserIdService.execute
-      .mockResolvedValueOnce(senderBankAccount) // sender
-      .mockResolvedValueOnce(recipientBankAccount); // recipient
+      .mockResolvedValueOnce(senderBankAccount)
+      .mockResolvedValueOnce(recipientBankAccount);
 
     findUserByCpfService.execute.mockResolvedValue(recipient);
     (bcrypt.compare as jest.Mock).mockResolvedValue(true);

@@ -48,7 +48,7 @@ describe('BankAccountController', () => {
     const userId = 1;
     const dto: CreateBankaccountDto = {
       access: '123456',
-      type_bank_account: TypeBankAccount.CURRENT_ACCOUNT, // ou POUPANCA conforme seu enum
+      type_bank_account: TypeBankAccount.CURRENT_ACCOUNT,
     };
     const result: Bankaccount = {
       id: 1,
@@ -66,7 +66,7 @@ describe('BankAccountController', () => {
         name: 'Carlos H P Jacinto',
         email: 'teste@teste.com',
         CPF: '12345678910',
-      }, // pode ser null ou mock de User se necessário
+      },
     };
 
     jest.spyOn(createService, 'execute').mockResolvedValue(result);
@@ -94,7 +94,7 @@ describe('BankAccountController', () => {
         name: 'Carlos H P Jacinto',
         email: 'teste@teste.com',
         CPF: '12345678910',
-      }, // pode ser null ou mock de User se necessário
+      },
     };
 
     jest.spyOn(findByAccountService, 'execute').mockResolvedValue(result);
@@ -123,7 +123,7 @@ describe('BankAccountController', () => {
         name: 'Carlos H P Jacinto',
         email: 'teste@teste.com',
         CPF: '12345678910',
-      }, // pode ser null ou mock de User se necessário
+      },
     };
 
     jest.spyOn(findByUserIdService, 'execute').mockResolvedValue(result);

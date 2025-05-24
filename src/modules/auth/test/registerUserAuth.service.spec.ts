@@ -52,8 +52,8 @@ describe('RegisterUserAuthService', () => {
       email: 'user@test.com',
     };
 
-    (findUserByCpfService.execute as jest.Mock).mockResolvedValue(null); // no existing user
-    (validateExisting as jest.Mock).mockImplementation(() => {}); // no error
+    (findUserByCpfService.execute as jest.Mock).mockResolvedValue(null);
+    (validateExisting as jest.Mock).mockImplementation(() => {});
     const fakeUser = { id: 1, ...dto };
     (createUserService.execute as jest.Mock).mockResolvedValue(fakeUser);
     (generateJwtToken.execute as jest.Mock).mockReturnValue('jwt_token_mock');

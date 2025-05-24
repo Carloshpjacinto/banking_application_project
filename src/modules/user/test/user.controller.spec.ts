@@ -19,7 +19,7 @@ describe('UserController', () => {
         },
         {
           provide: FindUserByIdService,
-          useValue: { execute: jest.fn() }, // adicionando mock do segundo service
+          useValue: { execute: jest.fn() },
         },
       ],
     }).compile();
