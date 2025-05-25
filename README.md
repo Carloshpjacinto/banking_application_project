@@ -62,12 +62,11 @@
 
 #### bash
 
-git clone https://github.com/Carloshpjacinto/banking_application_project.git<br>
-cd banking_application_project
+    git clone https://github.com/Carloshpjacinto/banking_application_project.git<br>
 
 ### 2. Instalação das dependencias
 
-#### npm install
+    npm install
 
 ### 3. Configurar as variaveis de ambiente
 
@@ -75,8 +74,8 @@ cd banking_application_project
 
 ### 4. Execução dos testes
 
-#### npm run test
+    npm run test:cov
 
 ### 5. Execução da aplicação
 
-#### npm run start:dev
+    npm run start:dev
