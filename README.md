@@ -56,6 +56,32 @@
 
 #### GET - /bankaccount/{userId}
 
+#### - Para realizar transferências Pix por Crédito:
+EX:
+cpf_recipient: "12345678910"
+transfer_value: "0.0"
+function_transfer: TRANSFER_CREDIT
+type_transfer: PIX_TRANSFER
+
+##### Realizar transferências por crédito gera um débito na conta (esse valor não é alterado com a realização de depósitos).
+
+#### - Para realizar transferências Pix por Débito:
+EX:
+cpf_recipient: "12345678910"
+transfer_value: "0.0"
+function_transfer: TRANSFER_DEBIT
+type_transfer: PIX_TRANSFER
+
+#### - Para realizar transferências do tipo Depósito:
+EX:
+cpf_recipient: "Preencher o proprio CPF do usuario da conta"
+transfer_value: "0.0"
+function_transfer: " "
+type_transfer: DEPOSIT
+
+#### Explicação da função Cheque Especial:
+O cheque especial é utilizado quando o usuário não possui saldo em conta ou valor em crédito para realizar transferências. Nesse caso, o valor da transferência será enviado e descontado do cheque especial, tornando o saldo da conta negativo. O valor negativado será cobrado automaticamente ao realizar um depósito: o valor devido será descontado, e o restante ficará disponível para novas transferências.
+
 ## ⚙️ Instalação e Execução
 
 ### 1. Clone o repositório
