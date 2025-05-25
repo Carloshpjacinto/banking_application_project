@@ -1,9 +1,10 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { CreateBankAccountService } from '../services/createBankAccount.service';
 import { CreateBankaccountDto } from '../dto/create-bankaccount.dto';
 import { FindBankAccountByAccountService } from '../services/findBankAccountByAccount.service';
 import { FindBankAccountByUserIdService } from '../services/findBankAccountByUserId.service';
 import { UserRequest } from 'src/shared/decorators/user.decorator';
+import { ParamId } from 'src/shared/decorators/paramId.decorator';
 
 @Controller('bankaccount')
 export class BankAccountController {
@@ -27,7 +28,7 @@ export class BankAccountController {
   }
 
   @Get(':id')
-  findUserById(@Param() id: number) {
+  findUserById(@ParamId() id: number) {
     return this.findBankAccountByUserIdService.execute(id);
   }
 }

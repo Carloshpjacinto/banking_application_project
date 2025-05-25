@@ -7,7 +7,12 @@ export class GenerateJwtToken {
   constructor(private readonly jwtService: JwtService) {}
 
   execute(user: User, expiresIn: string = '1d') {
-    const payload = { sub: user.id, name: user.name };
+    const payload = {
+      sub: user.id,
+      name: user.name,
+      CPF: user.CPF,
+      email: user.email,
+    };
     const options = {
       expiresIn: expiresIn,
       issuer: 'kontopp_bank',
