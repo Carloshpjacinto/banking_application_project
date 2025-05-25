@@ -48,7 +48,7 @@
 
 ##### Este endpoint pode receber três tipos diferentes de transferências (type_transfer): PIX_TRANSFER_DEBIT, PIX_TRANSFER_CREDIT ou DEPOSIT.
 
-#### Em caso de testes feitos no Postman (a coleção de endpoints está disponível no projeto), para realizar depósitos é necessário apenas inserir DEPOSIT no campo type_transfer, informar o próprio CPF da conta em cpf_recipient e o valor a ser enviado.
+##### Em caso de testes feitos no Postman (a coleção de endpoints está disponível no projeto), para realizar depósitos é necessário apenas inserir DEPOSIT no campo type_transfer, informar o próprio CPF da conta em cpf_recipient e o valor a ser enviado.
 
 #### GET - /auth/bankaccounthistory
 
