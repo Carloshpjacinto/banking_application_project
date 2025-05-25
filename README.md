@@ -34,7 +34,7 @@
  ##### Depósito de valores na conta
  ##### Transferência de valores entre contas
 
-## </> Endpoints da API:
+## </> Principais Endpoints da API:
 
 #### POST - /auth/register
 
@@ -54,7 +54,7 @@
 
 ##### Este endpoint pode receber três tipos diferentes de queries no campo description: DEPOSIT (depósitos), SENT (enviados) ou RECEIVED (recebidos). Ele retorna as movimentações da conta filtradas de acordo com a opção escolhida.
 
-#### GET - bankaccount/{userId}
+#### GET - /bankaccount/{userId}
 
 ## ⚙️ Instalação e Execução
 
