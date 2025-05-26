@@ -1,0 +1,204 @@
+{
+	"info": {
+		"_postman_id": "24289540-8625-41e7-af32-9a6832f80b95",
+		"name": "banking_application_project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "32235987"
+	},
+	"item": [
+		{
+			"name": "register_user",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Fulano de tal\",\r\n    \"email\": \"teste@teste.com\",\r\n    \"CPF\": \"12345678910\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/auth/register"
+			},
+			"response": []
+		},
+		{
+			"name": "register_bank_account",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjgsIm5hbWUiOiJDYXJsb3MgSGVucmlxdWUgUGFycmVpcmEgSmFjaW50byIsIkNQRiI6IjQ3NjUyNjQ0ODM2IiwiaWF0IjoxNzQ4MDUzNTg3LCJleHAiOjE3NDgxMzk5ODcsImF1ZCI6InVzZXJzIiwiaXNzIjoia29udG9wcF9iYW5rIn0.Fu5iLJk9GJasfQIQA_HQcyeVfPH9UDD50_x2oJuLe0I"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"access\": \"010597\",\r\n    \"type_bank_account\": \"CURRENT_ACCOUNT\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/auth/register/access"
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"num_account\": \"8121-2\",\r\n    \"access\": \"010597\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/auth/login"
+			},
+			"response": []
+		},
+		{
+			"name": "profile",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjgsIm5hbWUiOiJDYXJsb3MgSGVucmlxdWUgUGFycmVpcmEgSmFjaW50byIsIkNQRiI6IjQ3NjUyNjQ0ODM2IiwiaWF0IjoxNzQ4MDU0OTQ0LCJleHAiOjE3NDgxNDEzNDQsImF1ZCI6InVzZXJzIiwiaXNzIjoia29udG9wcF9iYW5rIn0.SriZleB7lgldNu_nrGTA7MML2KWEKlyV5vGNQ9-G3R8"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:3000/auth/profile"
+			},
+			"response": []
+		},
+		{
+			"name": "transfer-DEPOSIT",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsIm5hbWUiOiJDYXJsb3MgSGVucmlxdWUgUGFycmVpcmEgSmFjaW50byIsIkNQRiI6IjQ3NjUyNjQ0ODM2IiwiZW1haWwiOiJjYXJsby5oZW5yaXF1ZTM3QGdtYWlsLmNvbSIsImlhdCI6MTc0ODE2MjM1OCwiZXhwIjoxNzQ4MjQ4NzU4LCJhdWQiOiJ1c2VycyIsImlzcyI6ImtvbnRvcHBfYmFuayJ9.0IZZH4ENkWPgvJ1KCGvHRriaQknVp9hw_rSWmmi2QZs"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"type_transfer\": \"DEPOSIT\",\r\n    \"cpf_recipient\": \"12345678910\",\r\n    \"function_transfer\": \"\",\r\n    \"transfer_value\": \"500\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/auth/transfer"
+			},
+			"response": []
+		},
+		{
+			"name": "transfer-PIX_TRANFER_DEBIT",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjgsIm5hbWUiOiJDYXJsb3MgSGVucmlxdWUgUGFycmVpcmEgSmFjaW50byIsIkNQRiI6IjQ3NjUyNjQ0ODM2IiwiaWF0IjoxNzQ4MDU0OTQ0LCJleHAiOjE3NDgxNDEzNDQsImF1ZCI6InVzZXJzIiwiaXNzIjoia29udG9wcF9iYW5rIn0.SriZleB7lgldNu_nrGTA7MML2KWEKlyV5vGNQ9-G3R8"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"type_transfer\": \"PIX_TRANSFER\",\r\n    \"cpf_recipient\": \"9876543210\",\r\n    \"function_transfer\": \"TRANSFER_DEBIT\",\r\n    \"transfer_value\": \"250\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/auth/transfer"
+			},
+			"response": []
+		},
+		{
+			"name": "transfer-PIX_TRANFER_CREDIT",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjgsIm5hbWUiOiJDYXJsb3MgSGVucmlxdWUgUGFycmVpcmEgSmFjaW50byIsIkNQRiI6IjQ3NjUyNjQ0ODM2IiwiaWF0IjoxNzQ4MDU0NzA3LCJleHAiOjE3NDgxNDExMDcsImF1ZCI6InVzZXJzIiwiaXNzIjoia29udG9wcF9iYW5rIn0.1awDouho9ZYwrqRG6dzNNySXFcx4jjTf0idddElKcJ4"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"type_transfer\": \"PIX_TRANSFER\",\r\n    \"cpf_recipient\": \"12345678910\",\r\n    \"function_transfer\": \"TRANSFER_CREDIT\",\r\n    \"transfer_value\": \"250\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/auth/transfer"
+			},
+			"response": []
+		},
+		{
+			"name": "historyBankAccount",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsIm5hbWUiOiJDYXJsIEphY2ludG8iLCJpYXQiOjE3NDgwNjEwNDYsImV4cCI6MTc0ODE0NzQ0NiwiYXVkIjoidXNlcnMiLCJpc3MiOiJrb250b3BwX2JhbmsifQ.Gg_CktbdkVvpfedgtd2FM0-s8taULMWNVZr9T_QQBS8"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/auth/bankaccounthistory?description=DEPOSIT",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"auth",
+						"bankaccounthistory"
+					],
+					"query": [
+						{
+							"key": "description",
+							"value": "DEPOSIT"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get BankAccount by User Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:3000/bankaccount/1"
+			},
+			"response": []
+		}
+	]
+}
