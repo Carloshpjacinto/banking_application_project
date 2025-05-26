@@ -38,7 +38,7 @@ export class CreateBankAccountService {
         newBankAccount = this.bankAccountRepository.create({
           ...baseData,
           credit: '0',
-          special_check: '0',
+          special_check: '250',
         });
       } else {
         throw new Error('Tipo de conta bancária inválido.');

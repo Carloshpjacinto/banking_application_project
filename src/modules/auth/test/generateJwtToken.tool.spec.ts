@@ -27,7 +27,7 @@ describe('GenerateJwtToken', () => {
 
     expect(result).toEqual({ access_token: 'mocked-jwt-token' });
     expect(jwtService.sign).toHaveBeenCalledWith(
-      { sub: user.id, name: user.name },
+      { sub: user.id, name: user.name, CPF: user.CPF, email: user.email },
       {
         expiresIn: '1d',
         issuer: 'kontopp_bank',
@@ -48,7 +48,7 @@ describe('GenerateJwtToken', () => {
 
     expect(result).toEqual({ access_token: 'mocked-jwt-token' });
     expect(jwtService.sign).toHaveBeenCalledWith(
-      { sub: user.id, name: user.name },
+      { sub: user.id, name: user.name, CPF: user.CPF, email: user.email },
       {
         expiresIn: '2h',
         issuer: 'kontopp_bank',
