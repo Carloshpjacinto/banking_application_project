@@ -9,7 +9,6 @@ import {
   TransferType,
 } from 'src/modules/bankaccounthistory/entities/BankAccountHistory.entity';
 import { SpecialCheckUpdateValueService } from 'src/modules/bankaccount/services/specialcheckUpdateValue.service';
-import { TypeBankAccount } from 'src/modules/bankaccount/entities/bankaccount.entity';
 
 @Injectable()
 export class DepositTransferService {
@@ -27,11 +26,7 @@ export class DepositTransferService {
       const senderBankAccount =
         await this.findBankAccountByUserIdService.execute(userId);
 
-      if (
-        senderBankAccount.type_bank_account ==
-          TypeBankAccount.CURRENT_ACCOUNT &&
-        senderBankAccount.special_check < valueSpecialCheck
-      ) {
+      if (senderBankAccount.special_check < valueSpecialCheck) {
         const DebitSpecialCheck =
           Number(valueSpecialCheck) - Number(senderBankAccount.special_check);
 
