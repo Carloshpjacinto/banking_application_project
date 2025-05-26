@@ -36,6 +36,8 @@
 
 ## </> Principais Endpoints da API:
 
+### A Collection dos endpoints da API inclusa no projeto (criada no Postman).
+
 #### POST - /auth/register
 
 #### POST - /auth/register/access
