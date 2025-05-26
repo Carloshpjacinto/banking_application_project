@@ -29,8 +29,6 @@ export class LoginBankAccountAuthService {
         existingBankAccount.user.id,
       );
 
-      console.log(user);
-
       if (!user) {
         throw new Error('Conta não encontrado, tente novamente');
       }
