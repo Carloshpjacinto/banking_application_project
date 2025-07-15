@@ -103,7 +103,7 @@ describe('CreateUserService', () => {
       type_bank_account: createDto.type_bank_account,
       userId,
       credit: '0',
-      special_check: '0',
+      special_check: '250',
     };
 
     const mockAccount = {
