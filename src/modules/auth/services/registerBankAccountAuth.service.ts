@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateBankAccountService } from 'src/modules/bankaccount/services/createBankAccount.service';
 import { CreateBankAccountAuthDto } from '../dto/create-bankaccount-auth.dto';
 import { FindBankAccountByAccessService } from 'src/modules/bankaccount/services/findBankAccountByAccess.service';
-import { validateExisting } from '../tools/validateExistingUser.tool';
+import { validateExisting } from '../../../shared/tools/validateExistingUser.tool';
 import { hashData } from 'src/shared/tools/hashData.tool';
 
 @Injectable()

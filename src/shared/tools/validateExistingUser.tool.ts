@@ -1,8 +1,8 @@
 import { User } from 'src/modules/user/entities/user.entity';
-import { CreateUserAuthDto } from '../dto/create-user-auth.dto';
-import { BadRequestException } from '@nestjs/common';
+import { CreateUserAuthDto } from '../../modules/auth/dto/create-user-auth.dto';
+import { ConflictException } from '@nestjs/common';
 import { Bankaccount } from 'src/modules/bankaccount/entities/bankaccount.entity';
-import { CreateBankAccountAuthDto } from '../dto/create-bankaccount-auth.dto';
+import { CreateBankAccountAuthDto } from '../../modules/auth/dto/create-bankaccount-auth.dto';
 
 export function validateExisting(params: {
   user?: User | null;
@@ -18,13 +18,13 @@ export function validateExisting(params: {
       user?.email == createUser?.email ||
       user?.name == createUser?.name
     ) {
-      throw new BadRequestException('Usuário já existente');
+      throw new ConflictException('Existing user');
     }
   }
 
   if (bankAccount && createBank) {
     if (bankAccount.access == createBank?.access) {
-      throw new BadRequestException('Usuário já existente');
+      throw new ConflictException('Existing user');
     }
   }
 }

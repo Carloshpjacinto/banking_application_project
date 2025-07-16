@@ -4,7 +4,7 @@ import { RegisterUserAuthService } from '../services/registerUserAuth.service';
 import { CreateUserService } from 'src/modules/user/services/createUser.service';
 import { FindUserByCpfService } from 'src/modules/user/services/findUserByCpf.service';
 import { GenerateJwtToken } from '../tools/generateJwtToken.tool';
-import { validateExisting } from '../tools/validateExistingUser.tool';
+import { validateExisting } from '../../../shared/tools/validateExistingUser.tool';
 import { CreateUserAuthDto } from '../dto/create-user-auth.dto';
 
 jest.mock('../tools/validateExistingUser.tool');

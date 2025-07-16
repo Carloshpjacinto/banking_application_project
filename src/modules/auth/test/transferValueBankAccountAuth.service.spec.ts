@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TransferValueBankAccountAuthService } from '../services/transferValueBankAccountAuth.service';
-import { DepositTransferService } from 'src/modules/type-oftranfer/services/depositTransfer.service';
-import { DebitTransferTransferService } from 'src/modules/type-oftranfer/services/debitTransfer.service';
-import { CreditTransferTransferService } from 'src/modules/type-oftranfer/services/creditTransfer.service';
+import { DepositTransferService } from 'src/modules/typetransfer/services/depositTransfer.service';
+import { DebitTransferTransferService } from 'src/modules/typetransfer/services/debitTransfer.service';
+import { CreditTransferTransferService } from 'src/modules/typetransfer/services/creditTransfer.service';
 import {
   FunctionTransfer,
   TransferValueBankAccountAuthDTO,

@@ -1,7 +1,6 @@
 import { ConfigModule } from '@nestjs/config';
 import { forwardRef, Module } from '@nestjs/common';
 import { AuthController } from './controller/auth.controller';
-import { RegisterUserAuthService } from './services/registerUserAuth.service';
 import { UserModule } from '../user/user.module';
 import { GenerateJwtToken } from './tools/generateJwtToken.tool';
 import { JwtModule } from '@nestjs/jwt';
@@ -12,7 +11,7 @@ import { LoginBankAccountAuthService } from './services/loginBankAccountAuth.ser
 import { ProfileBankAccountAuthService } from './services/profileBankAccountAuth.service';
 import { TransferValueBankAccountAuthService } from './services/transferValueBankAccountAuth.service';
 import { BankaccounthistoryModule } from '../bankaccounthistory/bankaccounthistory.module';
-import { TypeOftranferModule } from '../type-oftranfer/type-oftranfer.module';
+import { TypeOftranferModule } from '../typetransfer/type-oftranfer.module';
 import { FindBankAccountHistoryAuthService } from './services/findBankAccountHistoryAuth.service';
 
 @Module({
@@ -30,7 +29,6 @@ import { FindBankAccountHistoryAuthService } from './services/findBankAccountHis
   ],
   controllers: [AuthController],
   providers: [
-    RegisterUserAuthService,
     GenerateJwtToken,
     RegisterBankAccountAuthService,
     ValidateJwtToken,

@@ -9,7 +9,7 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { RegisterUserAuthService } from '../services/registerUserAuth.service';
+import { CreateUserService } from 'src/modules/user/services/createUser.service';
 import { CreateUserAuthDto } from '../dto/create-user-auth.dto';
 import { AuthGuard } from 'src/shared/guards/auth.guard';
 import { UserRequest } from 'src/shared/decorators/user.decorator';
@@ -26,7 +26,7 @@ import { FindBankAccountHistoryAuthService } from '../services/findBankAccountHi
 @Controller('auth')
 export class AuthController {
   constructor(
-    private readonly registerUserAuthService: RegisterUserAuthService,
+    private readonly createUserService: CreateUserService,
     private readonly registerBankAccountAuthService: RegisterBankAccountAuthService,
     private readonly loginBankAccountAuthService: LoginBankAccountAuthService,
     private readonly profileBankAccountAuthService: ProfileBankAccountAuthService,
@@ -37,7 +37,7 @@ export class AuthController {
   @Post('register')
   @HttpCode(HttpStatus.CREATED)
   registerUser(@Body() body: CreateUserAuthDto) {
-    return this.registerUserAuthService.execute(body);
+    return this.createUserService.execute(body);
   }
 
   @UseGuards(AuthGuard)
