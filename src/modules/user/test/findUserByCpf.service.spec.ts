@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { USER_REPOSITORY } from '../utils/repositoriesToken';
+import { USER_REPOSITORY } from 'src/shared/tokens/repositorieTokens';
 import { FindUserByCpfService } from '../services/findUserByCpf.service';
 import { User } from '../entities/user.entity';
 import { Repository } from 'typeorm';

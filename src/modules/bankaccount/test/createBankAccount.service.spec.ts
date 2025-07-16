@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Test, TestingModule } from '@nestjs/testing';
-import { BANK_ACCOUNT_REPOSITORY } from '../utils/repositoriesToken';
+import { BANK_ACCOUNT_REPOSITORY } from 'src/shared/tokens/repositorieTokens';
 import { CreateBankAccountService } from '../services/createBankAccount.service';
 import { Bankaccount, TypeBankAccount } from '../entities/bankaccount.entity';
 import { Repository } from 'typeorm';

@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { BANK_ACCOUNT_REPOSITORY } from '../utils/repositoriesToken';
+import { BANK_ACCOUNT_REPOSITORY } from 'src/shared/tokens/repositorieTokens';
 import { CreditUpdateValueService } from '../services/creditUpdateValue.service';
 import { Bankaccount } from '../entities/bankaccount.entity';
 import { Repository } from 'typeorm';

@@ -3,7 +3,7 @@ import {
   TypeBankAccount,
 } from 'src/modules/bankaccount/entities/bankaccount.entity';
 import { validateExisting } from 'src/shared/tools/validateExistingUser.tool';
-import { BadRequestException } from '@nestjs/common';
+import { ConflictException } from '@nestjs/common';
 
 describe('validateExisting', () => {
   const existingUser = {
@@ -49,7 +49,7 @@ describe('validateExisting', () => {
         user: existingUser,
         createUser: { ...newUser, CPF: existingUser.CPF },
       }),
-    ).toThrow(BadRequestException);
+    ).toThrow(ConflictException);
   });
 
   it('should throw BadRequestException if user email matches', () => {
@@ -58,7 +58,7 @@ describe('validateExisting', () => {
         user: existingUser,
         createUser: { ...newUser, email: existingUser.email },
       }),
-    ).toThrow(BadRequestException);
+    ).toThrow(ConflictException);
   });
 
   it('should throw BadRequestException if user name matches', () => {
@@ -67,7 +67,7 @@ describe('validateExisting', () => {
         user: existingUser,
         createUser: { ...newUser, name: existingUser.name },
       }),
-    ).toThrow(BadRequestException);
+    ).toThrow(ConflictException);
   });
 
   it('should throw BadRequestException if bank account access matches', () => {
@@ -76,7 +76,7 @@ describe('validateExisting', () => {
         bankAccount: existingBankAccount,
         createBank: { ...newBankAccount, access: existingBankAccount.access },
       }),
-    ).toThrow(BadRequestException);
+    ).toThrow(ConflictException);
   });
 
   it('should NOT throw if user and createUser are null or do not conflict', () => {

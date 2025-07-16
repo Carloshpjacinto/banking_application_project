@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Test, TestingModule } from '@nestjs/testing';
-import { USER_REPOSITORY } from '../utils/repositoriesToken';
+import { USER_REPOSITORY } from 'src/shared/tokens/repositorieTokens';
 import { CreateUserService } from '../services/createUser.service';
 import { User } from '../entities/user.entity';
 import { Repository } from 'typeorm';
+import { FindUserByCpfService } from '../services/findUserByCpf.service'; // certifique-se que o caminho está correto
 
 let service: CreateUserService;
 let userRepository: Partial<Repository<User>>;
@@ -25,6 +26,12 @@ describe('CreateUserService', () => {
           useValue: {
             create: jest.fn(),
             save: jest.fn(),
+          },
+        },
+        {
+          provide: FindUserByCpfService,
+          useValue: {
+            execute: jest.fn().mockResolvedValue(null), // Simula CPF não encontrado
           },
         },
       ],

@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from '../controller/auth.controller';
-import { RegisterUserAuthService } from '../services/registerUserAuth.service';
+import { CreateUserService } from 'src/modules/user/services/createUser.service';
 import { RegisterBankAccountAuthService } from '../services/registerBankAccountAuth.service';
 import { LoginBankAccountAuthService } from '../services/loginBankAccountAuth.service';
 import { ProfileBankAccountAuthService } from '../services/profileBankAccountAuth.service';
@@ -16,7 +16,7 @@ import { TransferType } from 'src/modules/bankaccounthistory/entities/BankAccoun
 describe('AuthController', () => {
   let authController: AuthController;
 
-  const mockRegisterUserAuthService = { execute: jest.fn() };
+  const mockCreateUserService = { execute: jest.fn() };
   const mockRegisterBankAccountAuthService = { execute: jest.fn() };
   const mockLoginBankAccountAuthService = { execute: jest.fn() };
   const mockProfileBankAccountAuthService = { execute: jest.fn() };
@@ -28,8 +28,8 @@ describe('AuthController', () => {
       controllers: [AuthController],
       providers: [
         {
-          provide: RegisterUserAuthService,
-          useValue: mockRegisterUserAuthService,
+          provide: CreateUserService,
+          useValue: mockCreateUserService,
         },
         {
           provide: RegisterBankAccountAuthService,
@@ -71,11 +71,11 @@ describe('AuthController', () => {
         email: 'teste@teste.com',
         CPF: '12345678910',
       };
-      mockRegisterUserAuthService.execute.mockResolvedValue('user_registered');
+      mockCreateUserService.execute.mockResolvedValue('user_registered');
 
       const result = await authController.registerUser(dto);
 
-      expect(mockRegisterUserAuthService.execute).toHaveBeenCalledWith(dto);
+      expect(mockCreateUserService.execute).toHaveBeenCalledWith(dto);
       expect(result).toBe('user_registered');
     });
   });
