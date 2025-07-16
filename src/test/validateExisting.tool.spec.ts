@@ -2,7 +2,7 @@ import {
   Bankaccount,
   TypeBankAccount,
 } from 'src/modules/bankaccount/entities/bankaccount.entity';
-import { validateExisting } from 'src/modules/auth/tools/validateExistingUser.tool';
+import { validateExisting } from 'src/shared/tools/validateExistingUser.tool';
 import { BadRequestException } from '@nestjs/common';
 
 describe('validateExisting', () => {

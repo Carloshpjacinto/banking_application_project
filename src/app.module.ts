@@ -4,7 +4,7 @@ import { UserModule } from './modules/user/user.module';
 import { BankaccountModule } from './modules/bankaccount/bankaccount.module';
 import { BankaccounthistoryModule } from './modules/bankaccounthistory/bankaccounthistory.module';
 import { AuthModule } from './modules/auth/auth.module';
-import { TypeOftranferModule } from './modules/type-oftranfer/type-oftranfer.module';
+import { TypeOftranferModule } from './modules/typetransfer/type-oftranfer.module';
 
 @Module({
   imports: [

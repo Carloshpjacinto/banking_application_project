@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { DepositTransferService } from 'src/modules/type-oftranfer/services/depositTransfer.service';
+import { DepositTransferService } from 'src/modules/typetransfer/services/depositTransfer.service';
 import {
   FunctionTransfer,
   TransferValueBankAccountAuthDTO,
 } from '../dto/transfer-value-bank-account-auth.dto';
-import { DebitTransferTransferService } from 'src/modules/type-oftranfer/services/debitTransfer.service';
-import { CreditTransferTransferService } from 'src/modules/type-oftranfer/services/creditTransfer.service';
+import { DebitTransferTransferService } from 'src/modules/typetransfer/services/debitTransfer.service';
+import { CreditTransferTransferService } from 'src/modules/typetransfer/services/creditTransfer.service';
 import { TransferType } from 'src/modules/bankaccounthistory/entities/BankAccountHistory.entity';
 
 @Injectable()

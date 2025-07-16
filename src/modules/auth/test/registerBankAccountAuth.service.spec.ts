@@ -5,7 +5,7 @@ import { RegisterBankAccountAuthService } from '../services/registerBankAccountA
 import { CreateBankAccountService } from 'src/modules/bankaccount/services/createBankAccount.service';
 import { FindBankAccountByAccessService } from 'src/modules/bankaccount/services/findBankAccountByAccess.service';
 import { CreateBankAccountAuthDto } from '../dto/create-bankaccount-auth.dto';
-import * as validateModule from '../tools/validateExistingUser.tool';
+import * as validateModule from '../../../shared/tools/validateExistingUser.tool';
 import * as hashModule from 'src/shared/tools/hashData.tool';
 import { TypeBankAccount } from 'src/modules/bankaccount/entities/bankaccount.entity';
 
