@@ -1,39 +1,39 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from '../controller/auth.controller';
 import { CreateUserService } from 'src/modules/user/services/createUser.service';
-import { RegisterBankAccountAuthService } from '../services/registerBankAccountAuth.service';
+import { CreateBankAccountService } from 'src/modules/bankaccount/services/createBankAccount.service';
 import { LoginBankAccountAuthService } from '../services/loginBankAccountAuth.service';
 import { ProfileBankAccountAuthService } from '../services/profileBankAccountAuth.service';
 import { TransferValueBankAccountAuthService } from '../services/transferValueBankAccountAuth.service';
+import { FindBankAccountHistoryService } from 'src/modules/bankaccounthistory/services/findBankAccountHistory.service';
+import {
+  Description,
+  TransferType,
+} from 'src/modules/bankaccounthistory/entities/BankAccountHistory.entity';
 import { TypeBankAccount } from 'src/modules/bankaccount/entities/bankaccount.entity';
 import { FunctionTransfer } from '../dto/transfer-value-bank-account-auth.dto';
+import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from 'src/shared/guards/auth.guard';
-import { FindBankAccountHistoryAuthService } from '../services/findBankAccountHistoryAuth.service';
-import { TransferType } from 'src/modules/bankaccounthistory/entities/BankAccountHistory.entity';
 
 describe('AuthController', () => {
-  let authController: AuthController;
+  let controller: AuthController;
 
+  // Mocks
   const mockCreateUserService = { execute: jest.fn() };
-  const mockRegisterBankAccountAuthService = { execute: jest.fn() };
+  const mockCreateBankAccountService = { execute: jest.fn() };
   const mockLoginBankAccountAuthService = { execute: jest.fn() };
   const mockProfileBankAccountAuthService = { execute: jest.fn() };
   const mockTransferValueBankAccountAuthService = { execute: jest.fn() };
-  const mockTFindBankAccountHistoryAuthService = { execute: jest.fn() };
+  const mockFindBankAccountHistoryService = { execute: jest.fn() };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AuthController],
       providers: [
+        { provide: CreateUserService, useValue: mockCreateUserService },
         {
-          provide: CreateUserService,
-          useValue: mockCreateUserService,
-        },
-        {
-          provide: RegisterBankAccountAuthService,
-          useValue: mockRegisterBankAccountAuthService,
+          provide: CreateBankAccountService,
+          useValue: mockCreateBankAccountService,
         },
         {
           provide: LoginBankAccountAuthService,
@@ -48,103 +48,118 @@ describe('AuthController', () => {
           useValue: mockTransferValueBankAccountAuthService,
         },
         {
-          provide: FindBankAccountHistoryAuthService,
-          useValue: mockTFindBankAccountHistoryAuthService,
+          provide: FindBankAccountHistoryService,
+          useValue: mockFindBankAccountHistoryService,
         },
       ],
     })
       .overrideGuard(AuthGuard)
-      .useValue({ canActivate: () => true })
+      .useValue({
+        canActivate: jest.fn(() => true),
+      })
       .compile();
 
-    authController = module.get<AuthController>(AuthController);
+    controller = module.get<AuthController>(AuthController);
   });
 
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  describe('registerUser', () => {
-    it('should call RegisterUserAuthService.execute with correct params', async () => {
-      const dto = {
-        name: 'Carlos H P Jacinto',
-        email: 'teste@teste.com',
-        CPF: '12345678910',
-      };
-      mockCreateUserService.execute.mockResolvedValue('user_registered');
+  // 🚀 Testes
 
-      const result = await authController.registerUser(dto);
+  it('should register a user', async () => {
+    const dto = {
+      name: 'Carlos',
+      email: 'carlos@email.com',
+      password: '123456',
+      CPF: '12345678900',
+    };
+    mockCreateUserService.execute.mockResolvedValue('user_created');
 
-      expect(mockCreateUserService.execute).toHaveBeenCalledWith(dto);
-      expect(result).toBe('user_registered');
-    });
+    const result = await controller.registerUser(dto);
+
+    expect(mockCreateUserService.execute).toHaveBeenCalledWith(dto);
+    expect(result).toBe('user_created');
   });
 
-  describe('registerBankAccount', () => {
-    it('should call RegisterBankAccountAuthService.execute with userId and dto', async () => {
-      const req = { user: { id: 1 } } as any;
-      const dto = {
-        access: '010203',
-        type_bank_account: TypeBankAccount.CURRENT_ACCOUNT,
-      };
-      mockRegisterBankAccountAuthService.execute.mockResolvedValue(
-        'bank_account_registered',
-      );
+  it('should register a bank account', async () => {
+    const userId = 1;
+    const dto = {
+      access: '1234',
+      type_bank_account: TypeBankAccount.CURRENT_ACCOUNT,
+    };
+    mockCreateBankAccountService.execute.mockResolvedValue(
+      'bank_account_created',
+    );
 
-      const result = await authController.registerBankAccount(req, dto);
+    const result = await controller.registerBankAccount(userId, dto);
 
-      expect(mockRegisterBankAccountAuthService.execute).toHaveBeenCalledWith(
-        1,
-        dto,
-      );
-      expect(result).toBe('bank_account_registered');
-    });
+    expect(mockCreateBankAccountService.execute).toHaveBeenCalledWith(
+      userId,
+      dto,
+    );
+    expect(result).toBe('bank_account_created');
   });
 
-  describe('login', () => {
-    it('should call LoginBankAccountAuthService.execute with correct params', async () => {
-      const dto = { num_account: '1234-5', access: '123456' };
-      mockLoginBankAccountAuthService.execute.mockResolvedValue('token');
+  it('should login', async () => {
+    const dto = {
+      access: '1234',
+      password: 'senha',
+      num_account: '987654',
+    };
+    mockLoginBankAccountAuthService.execute.mockResolvedValue('token');
 
-      const result = await authController.login(dto);
+    const result = await controller.login(dto);
 
-      expect(mockLoginBankAccountAuthService.execute).toHaveBeenCalledWith(dto);
-      expect(result).toBe('token');
-    });
+    expect(mockLoginBankAccountAuthService.execute).toHaveBeenCalledWith(dto);
+    expect(result).toBe('token');
   });
 
-  describe('profile', () => {
-    it('should call ProfileBankAccountAuthService.execute with userId', async () => {
-      mockProfileBankAccountAuthService.execute.mockResolvedValue(
-        'profile_data',
-      );
+  it('should get user profile', async () => {
+    const userId = 1;
+    mockProfileBankAccountAuthService.execute.mockResolvedValue('profile_data');
 
-      const result = await authController.profile(1);
+    const result = await controller.profile(userId);
 
-      expect(mockProfileBankAccountAuthService.execute).toHaveBeenCalledWith(1);
-      expect(result).toBe('profile_data');
-    });
+    expect(mockProfileBankAccountAuthService.execute).toHaveBeenCalledWith(
+      userId,
+    );
+    expect(result).toBe('profile_data');
   });
 
-  describe('transferencia', () => {
-    it('should call TransferValueBankAccountAuthService.execute with userId and dto', async () => {
-      const dto = {
-        type_transfer: TransferType.PIX_TRANSFER,
-        cpf_recipient: '12345678910',
-        function_transfer: FunctionTransfer.TRANSFER_DEBIT,
-        transfer_value: '150',
-        access: '010203',
-      };
-      mockTransferValueBankAccountAuthService.execute.mockResolvedValue(
-        'transfer_success',
-      );
+  it('should transfer value', async () => {
+    const userId = 1;
+    const dto = {
+      type_transfer: TransferType.PIX_TRANSFER,
+      cpf_recipient: '98765432100',
+      function_transfer: FunctionTransfer.TRANSFER_CREDIT,
+      transfer_value: '100',
+      access: '5678',
+    };
+    mockTransferValueBankAccountAuthService.execute.mockResolvedValue(
+      'transfer_done',
+    );
 
-      const result = await authController.transfer(1, dto);
+    const result = await controller.transfer(userId, dto);
 
-      expect(
-        mockTransferValueBankAccountAuthService.execute,
-      ).toHaveBeenCalledWith(1, dto);
-      expect(result).toBe('transfer_success');
-    });
+    expect(
+      mockTransferValueBankAccountAuthService.execute,
+    ).toHaveBeenCalledWith(userId, dto);
+    expect(result).toBe('transfer_done');
+  });
+
+  it('should get bank account history', async () => {
+    const cpf = '12345678900';
+    const description: Description = Description.SENT;
+    mockFindBankAccountHistoryService.execute.mockResolvedValue('history');
+
+    const result = await controller.getHistory(cpf, description);
+
+    expect(mockFindBankAccountHistoryService.execute).toHaveBeenCalledWith(
+      cpf,
+      description,
+    );
+    expect(result).toBe('history');
   });
 });

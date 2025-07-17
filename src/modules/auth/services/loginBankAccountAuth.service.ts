@@ -18,6 +18,9 @@ export class LoginBankAccountAuthService {
       const existingBankAccount =
         await this.findBankAccountByAccountService.execute(body.num_account);
 
+      if (!existingBankAccount.access)
+        throw new Error(`Erro ao encontrar conta!`);
+
       if (
         !existingBankAccount ||
         !(await bcrypt.compare(body.access, existingBankAccount.access))

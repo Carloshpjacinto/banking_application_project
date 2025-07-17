@@ -1,13 +1,18 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Inject, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Bankaccount, TypeBankAccount } from '../entities/bankaccount.entity';
 import { CreateBankaccountDto } from '../dto/create-bankaccount.dto';
+import { FindBankAccountByAccessService } from './findBankAccountByAccess.service';
+import { validateExisting } from 'src/shared/tools/validateExistingUser.tool';
+import { hashData } from 'src/shared/tools/hashData.tool';
 
 @Injectable()
 export class CreateBankAccountService {
   constructor(
     @Inject('BANK_ACCOUNT_REPOSITORY')
     private readonly bankAccountRepository: Repository<Bankaccount>,
+    private readonly findBankAccountByAccessService: FindBankAccountByAccessService,
   ) {}
   async execute(
     userId: number,
@@ -15,6 +20,16 @@ export class CreateBankAccountService {
   ): Promise<Bankaccount> {
     try {
       const account_number = `81${Math.floor(Math.random() * 79 + 10)}-${Math.floor(Math.random() * 9 + 1)}`;
+
+      if (!body.access) throw new Error(`Erro ao criar conta bancária`);
+
+      const existingBank = await this.findBankAccountByAccessService.execute(
+        body.access,
+      );
+
+      validateExisting({ bankAccount: existingBank, createBank: body });
+
+      body.access = await hashData(body.access);
 
       let newBankAccount: Bankaccount;
 
@@ -45,7 +60,10 @@ export class CreateBankAccountService {
       }
 
       await this.bankAccountRepository.save(newBankAccount);
-      return newBankAccount;
+
+      const { access, ...rest } = newBankAccount;
+
+      return rest;
     } catch (err) {
       throw new Error(`Erro ao criar conta bancária: ${err}`);
     }

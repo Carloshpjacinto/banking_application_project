@@ -6,7 +6,6 @@ import {
   HttpStatus,
   Post,
   Query,
-  Request,
   UseGuards,
 } from '@nestjs/common';
 import { CreateUserService } from 'src/modules/user/services/createUser.service';
@@ -14,24 +13,24 @@ import { CreateUserAuthDto } from '../dto/create-user-auth.dto';
 import { AuthGuard } from 'src/shared/guards/auth.guard';
 import { UserRequest } from 'src/shared/decorators/user.decorator';
 import { CreateBankAccountAuthDto } from '../dto/create-bankaccount-auth.dto';
-import { RegisterBankAccountAuthService } from '../services/registerBankAccountAuth.service';
+import { CreateBankAccountService } from 'src/modules/bankaccount/services/createBankAccount.service';
 import { LoginBankAccountAuthDTO } from '../dto/login-bank-account-auth.dto';
 import { LoginBankAccountAuthService } from '../services/loginBankAccountAuth.service';
 import { ProfileBankAccountAuthService } from '../services/profileBankAccountAuth.service';
 import { TransferValueBankAccountAuthDTO } from '../dto/transfer-value-bank-account-auth.dto';
 import { TransferValueBankAccountAuthService } from '../services/transferValueBankAccountAuth.service';
 import { Description } from 'src/modules/bankaccounthistory/entities/BankAccountHistory.entity';
-import { FindBankAccountHistoryAuthService } from '../services/findBankAccountHistoryAuth.service';
+import { FindBankAccountHistoryService } from 'src/modules/bankaccounthistory/services/findBankAccountHistory.service';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly createUserService: CreateUserService,
-    private readonly registerBankAccountAuthService: RegisterBankAccountAuthService,
+    private readonly createBankAccountService: CreateBankAccountService,
     private readonly loginBankAccountAuthService: LoginBankAccountAuthService,
     private readonly profileBankAccountAuthService: ProfileBankAccountAuthService,
     private readonly transferValueBankAccountAuthService: TransferValueBankAccountAuthService,
-    private readonly findBankAccountHistoryService: FindBankAccountHistoryAuthService,
+    private readonly findBankAccountHistoryService: FindBankAccountHistoryService,
   ) {}
 
   @Post('register')
@@ -44,11 +43,10 @@ export class AuthController {
   @Post('register/access')
   @HttpCode(HttpStatus.CREATED)
   registerBankAccount(
-    @Request() request: Request,
+    @UserRequest('id') userId: number,
     @Body() { access, type_bank_account }: CreateBankAccountAuthDto,
   ) {
-    const userId = request.user.id;
-    return this.registerBankAccountAuthService.execute(userId, {
+    return this.createBankAccountService.execute(userId, {
       access,
       type_bank_account,
     });
@@ -80,8 +78,8 @@ export class AuthController {
   @Get('bankaccounthistory')
   @HttpCode(HttpStatus.OK)
   getHistory(
-    @Query('description') description: Description,
     @UserRequest('CPF') cpf: string,
+    @Query('description') description: Description,
   ) {
     return this.findBankAccountHistoryService.execute(cpf, description);
   }

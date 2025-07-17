@@ -56,6 +56,11 @@ describe('FindUserByAccessService', () => {
   it('should return a bank account by access', async () => {
     (userRepository.findOne as jest.Mock).mockResolvedValue(mockBankAccount);
 
+    if (!mockBankAccount.access)
+      throw new Error(
+        `Erro ao encontrar conta bancaria, tente novamente mais tarde`,
+      );
+
     const result = await service.execute(mockBankAccount.access);
 
     expect(userRepository.findOne).toHaveBeenCalledWith({

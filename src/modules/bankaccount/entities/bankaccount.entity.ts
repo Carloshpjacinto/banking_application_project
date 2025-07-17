@@ -19,7 +19,7 @@ export class Bankaccount {
   id: number;
 
   @Column()
-  access: string;
+  access?: string;
 
   @Column()
   agency: string;

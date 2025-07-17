@@ -23,7 +23,7 @@ export function validateExisting(params: {
   }
 
   if (bankAccount && createBank) {
-    if (bankAccount.access == createBank?.access) {
+    if (bankAccount?.access == createBank?.access) {
       throw new ConflictException('Existing user');
     }
   }

@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { FindBankAccountByUserIdService } from '../services/findBankAccountByUserId.service';
 import { Bankaccount, TypeBankAccount } from '../entities/bankaccount.entity';
 import { Repository } from 'typeorm';
-import { BANK_ACCOUNT_REPOSITORY } from 'src/shared/tokens/repositorieTokens'; 
+import { BANK_ACCOUNT_REPOSITORY } from 'src/shared/tokens/repositorieTokens';
 import { User } from 'src/modules/user/entities/user.entity';
 
 let service: FindBankAccountByUserIdService;

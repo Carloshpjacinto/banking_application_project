@@ -5,7 +5,7 @@ export class CreateBankaccountDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(6)
-  access: string;
+  access?: string;
 
   @IsEnum(TypeBankAccount)
   @IsNotEmpty()

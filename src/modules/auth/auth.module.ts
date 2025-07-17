@@ -4,7 +4,6 @@ import { AuthController } from './controller/auth.controller';
 import { UserModule } from '../user/user.module';
 import { GenerateJwtToken } from './tools/generateJwtToken.tool';
 import { JwtModule } from '@nestjs/jwt';
-import { RegisterBankAccountAuthService } from './services/registerBankAccountAuth.service';
 import { BankaccountModule } from '../bankaccount/bankaccount.module';
 import { ValidateJwtToken } from './tools/validateJwtToken.tool';
 import { LoginBankAccountAuthService } from './services/loginBankAccountAuth.service';
@@ -12,7 +11,6 @@ import { ProfileBankAccountAuthService } from './services/profileBankAccountAuth
 import { TransferValueBankAccountAuthService } from './services/transferValueBankAccountAuth.service';
 import { BankaccounthistoryModule } from '../bankaccounthistory/bankaccounthistory.module';
 import { TypeOftranferModule } from '../typetransfer/type-oftranfer.module';
-import { FindBankAccountHistoryAuthService } from './services/findBankAccountHistoryAuth.service';
 
 @Module({
   imports: [
@@ -30,12 +28,10 @@ import { FindBankAccountHistoryAuthService } from './services/findBankAccountHis
   controllers: [AuthController],
   providers: [
     GenerateJwtToken,
-    RegisterBankAccountAuthService,
     ValidateJwtToken,
     LoginBankAccountAuthService,
     ProfileBankAccountAuthService,
     TransferValueBankAccountAuthService,
-    FindBankAccountHistoryAuthService,
   ],
   exports: [GenerateJwtToken, ValidateJwtToken],
 })
